@@ -1,0 +1,210 @@
+{
+  "dbc": "dbc/can1-tesla-model-3.dbc",
+  "interfaces": {"can0": 47000, "can1": 47001},
+  "interface_by_sender": {"VehicleBus": "can0", "ChassisBus": "can1"},
+  "default_interface": "can0",
+  "default_period_ms": 1000,
+  "periods_ms": {
+    "ID257DIspeed": 100,
+    "ID118DriveSystemStatus": 100,
+    "ID132HVBattAmpVolt": 100,
+    "ID111RCM_inertial2": 100,
+    "ID273UI_vehicleControl": 100,
+    "ID2E1VCFRONT_status": 100,
+    "ID102VCLEFT_doorStatus": 500,
+    "ID103VCRIGHT_doorStatus": 500,
+    "ID3B3UI_vehicleControl2": 500,
+    "ID3E2VCLEFT_lightStatus": 100,
+    "ID264ChargeLineStatus": 500,
+    "ID29DCP_dcChargeStatus": 500,
+    "ID252BMS_powerAvailable": 500,
+    "ID2D2BMSVAlimits": 500,
+    "ID261_12vBattStatus": 1000,
+    "ID321VCFRONT_sensors": 1000,
+    "ID33AUI_rangeSOC": 1000
+  },
+  "fixed": {
+    "ID118DriveSystemStatus.DI_immobilizerState": "DI_IMM_STATE_DISARMED",
+    "ID257DIspeed.DI_uiSpeedUnits": "DI_SPEED_KPH"
+  },
+  "signals": [
+    {"signal": "ID257DIspeed.DI_vehicleSpeed", "plant": "vehicle.speed_kph"},
+    {"signal": "ID257DIspeed.DI_uiSpeed", "plant": "vehicle.display_speed_kph"},
+    {"signal": "ID111RCM_inertial2.RCM_longitudinalAccel", "plant": "vehicle.long_accel_mps2"},
+    {"signal": "ID111RCM_inertial2.RCM_lateralAccel", "plant": "vehicle.lat_accel_mps2"},
+    {"signal": "ID111RCM_inertial2.RCM_longitudinalAccelQF", "plant": "vehicle.long_accel_valid"},
+    {"signal": "ID111RCM_inertial2.RCM_lateralAccelQF", "plant": "vehicle.lat_accel_valid"},
+    {
+      "signal": "ID118DriveSystemStatus.DI_gear",
+      "plant": "vehicle.gear",
+      "values": {"invalid": 0, "park": 1, "reverse": 2, "neutral": 3, "drive": 4, "sna": 7}
+    },
+    {
+      "signal": "ID118DriveSystemStatus.DI_systemState",
+      "plant": "vehicle.drive_state",
+      "values": {"unavailable": "DI_SYS_UNAVAILABLE", "idle": "DI_SYS_IDLE", "standby": "DI_SYS_STANDBY", "enable": "DI_SYS_ENABLE"}
+    },
+    {
+      "signal": "ID118DriveSystemStatus.DI_brakePedalState",
+      "plant": "vehicle.brake_pedal",
+      "values": {"0": "OFF", "1": "ON"}
+    },
+    {"signal": "ID3F3UI_odo.UI_odometer", "plant": "vehicle.odometer_km"},
+    {"signal": "ID04FGPSLatLong.GPSLatitude04F", "plant": "vehicle.latitude_deg"},
+    {"signal": "ID04FGPSLatLong.GPSLongitude04F", "plant": "vehicle.longitude_deg"},
+    {"signal": "ID04FGPSLatLong.GPSAccuracy04F", "plant": "vehicle.gps_accuracy_m"},
+    {"signal": "ID132HVBattAmpVolt.BattVoltage132", "plant": "battery.pack_voltage_v"},
+    {"signal": "ID132HVBattAmpVolt.SmoothBattCurrent132", "plant": "battery.pack_current_a"},
+    {"signal": "ID292BMS_SOC.SOCave292", "plant": "battery.soc_pct"},
+    {"signal": "ID312BMSthermal.BMSmaxPackTemperature", "plant": "battery.temp_max_c"},
+    {"signal": "ID312BMSthermal.BMSminPackTemperature", "plant": "battery.temp_min_c"},
+    {"signal": "ID352BMS_energyStatus.BMS_nominalEnergyRemaining", "plant": "battery.nominal_energy_remaining_kwh"},
+    {"signal": "ID352BMS_energyStatus.BMS_nominalFullPackEnergy", "plant": "battery.nominal_full_pack_kwh"},
+    {"signal": "ID292BMS_SOC.BattBeginningOfLifeEnergy292", "plant": "battery.beginning_of_life_kwh"},
+
+    {
+      "signal": "ID23DCP_chargeStatus.CP_hvChargeStatus",
+      "plant": "charge.status",
+      "values": {
+        "inactive": "CP_CHARGE_INACTIVE",
+        "connected": "CP_CHARGE_CONNECTED",
+        "ext_evse_test": "CP_EXT_EVSE_TEST_ACTIVE",
+        "evse_test_passed": "CP_EVSE_TEST_PASSED",
+        "enabled": "CP_CHARGE_ENABLED",
+        "standby": "CP_CHARGE_STANDBY"
+      }
+    },
+    {
+      "signal": "ID25DCP_status.CP_chargeCablePresent",
+      "plant": "charge.cable_present",
+      "values": {"0": "CABLE_NOT_PRESENT", "1": "CABLE_PRESENT"}
+    },
+    {
+      "signal": "ID25DCP_status.CP_latchState",
+      "plant": "charge.latch",
+      "values": {"released": "CP_LATCH_DISENGAGED", "engaged": "CP_LATCH_ENGAGED"}
+    },
+    {
+      "signal": "ID25DCP_status.CP_doorControlState",
+      "plant": "charge.port_door",
+      "values": {"closed": "CP_doorSenseClosed", "opening": "CP_doorOpening", "open": "CP_doorSenseOpen", "closing": "CP_doorClosing"}
+    },
+    {
+      "signal": "ID243VCRIGHT_hvacStatus.VCRIGHT_hvacPowerState",
+      "plant": "climate.power_state",
+      "values": {"off": "OFF", "on": "ON", "precondition": "PRECONDITION", "overheat": "OVERHEAT_PROTECT", "overheat_fan": "OVERHEAT_PROTECT_FANONLY"}
+    },
+    {"signal": "ID243VCRIGHT_hvacStatus.VCRIGHT_hvacCabinTempEst", "plant": "climate.cabin_c"},
+    {
+      "signal": "ID243VCRIGHT_hvacStatus.VCRIGHT_hvacACRunning",
+      "plant": "climate.ac_running",
+      "values": {"0": "OFF", "1": "ON"}
+    },
+    {"signal": "ID243VCRIGHT_hvacStatus.VCRIGHT_hvacOverheatProtActive", "plant": "climate.overheat_active"},
+    {"signal": "ID243VCRIGHT_hvacStatus.VCRIGHT_hvacBlowerSegment", "plant": "climate.blower_segment"},
+    {"signal": "ID2E1VCFRONT_status.VCFRONT_hornOn", "plant": "body.horn_on"},
+    {"signal": "ID2E1VCFRONT_status.VCFRONT_anyDoorOpen", "plant": "body.any_door_open"},
+    {"signal": "ID2E1VCFRONT_status.VCFRONT_anyClosureOpen", "plant": "body.any_closure_open"},
+    {
+      "signal": "ID2E1VCFRONT_status.VCFRONT_frunkLatchStatus",
+      "plant": "body.frunk",
+      "values": {"closed": "LATCH_CLOSED", "opening": "LATCH_OPENING", "open": "LATCH_OPENED", "closing": "LATCH_CLOSING"}
+    },
+    {
+      "signal": "ID102VCLEFT_doorStatus.VCLEFT_frontLatchStatus",
+      "plant": "body.door_front_left",
+      "values": {"closed": "LATCH_CLOSED", "opening": "LATCH_OPENING", "open": "LATCH_OPENED", "closing": "LATCH_CLOSING"}
+    },
+    {
+      "signal": "ID102VCLEFT_doorStatus.VCLEFT_rearLatchStatus",
+      "plant": "body.door_rear_left",
+      "values": {"closed": "LATCH_CLOSED", "opening": "LATCH_OPENING", "open": "LATCH_OPENED", "closing": "LATCH_CLOSING"}
+    },
+    {
+      "signal": "ID103VCRIGHT_doorStatus.VCRIGHT_frontLatchStatus",
+      "plant": "body.door_front_right",
+      "values": {"closed": "LATCH_CLOSED", "opening": "LATCH_OPENING", "open": "LATCH_OPENED", "closing": "LATCH_CLOSING"}
+    },
+    {
+      "signal": "ID103VCRIGHT_doorStatus.VCRIGHT_rearLatchStatus",
+      "plant": "body.door_rear_right",
+      "values": {"closed": "LATCH_CLOSED", "opening": "LATCH_OPENING", "open": "LATCH_OPENED", "closing": "LATCH_CLOSING"}
+    },
+    {
+      "signal": "ID103VCRIGHT_doorStatus.VCRIGHT_trunkLatchStatus",
+      "plant": "body.trunk",
+      "values": {"closed": "LATCH_CLOSED", "opening": "LATCH_OPENING", "open": "LATCH_OPENED", "closing": "LATCH_CLOSING"}
+    },
+    {
+      "signal": "ID3F5VCFRONT_lighting.VCFRONT_lowBeamLeftStatus",
+      "plant": "lights.low_beam",
+      "values": {"off": "LIGHT_OFF", "on": "LIGHT_ON"}
+    },
+    {
+      "signal": "ID3F5VCFRONT_lighting.VCFRONT_lowBeamRightStatus",
+      "plant": "lights.low_beam",
+      "values": {"off": "LIGHT_OFF", "on": "LIGHT_ON"}
+    },
+    {
+      "signal": "ID3E2VCLEFT_lightStatus.VCLEFT_brakeLightStatus",
+      "plant": "lights.brake",
+      "values": {"off": "LIGHT_OFF", "on": "LIGHT_ON"}
+    },
+    {"signal": "ID264ChargeLineStatus.ChargeLineVoltage264", "plant": "charge.line_voltage_v"},
+    {"signal": "ID264ChargeLineStatus.ChargeLineCurrent264", "plant": "charge.line_current_a"},
+    {"signal": "ID264ChargeLineStatus.ChargeLinePower264", "plant": "charge.line_power_kw"},
+    {"signal": "ID29DCP_dcChargeStatus.CP_evseOutputDcVoltage", "plant": "charge.evse_dc_voltage_v"},
+    {"signal": "ID29DCP_dcChargeStatus.CP_evseOutputDcCurrent", "plant": "charge.evse_dc_current_a"},
+    {"signal": "ID321VCFRONT_sensors.VCFRONT_tempAmbient", "plant": "environment.ambient_filtered_c"},
+    {"signal": "ID261_12vBattStatus.v12vBattVoltage261", "plant": "lv.voltage_v"},
+    {"signal": "ID33AUI_rangeSOC.UI_Range", "plant": "vehicle.range_km"},
+    {"signal": "ID352BMS_energyStatus.BMS_energyToChargeComplete", "plant": "battery.energy_to_limit_kwh"},
+    {"signal": "ID252BMS_powerAvailable.BMS_maxDischargePower", "plant": "battery.max_discharge_kw"},
+    {"signal": "ID2D2BMSVAlimits.MaxChargeCurrent2D2", "plant": "battery.max_charge_a"},
+
+    {
+      "signal": "ID273UI_vehicleControl.UI_lockRequest",
+      "request": "request.lock",
+      "values": {"idle": "UI_LOCK_REQUEST_IDLE", "lock": "UI_LOCK_REQUEST_LOCK", "unlock": "UI_LOCK_REQUEST_UNLOCK", "remote_unlock": "UI_LOCK_REQUEST_REMOTE_UNLOCK", "remote_lock": "UI_LOCK_REQUEST_REMOTE_LOCK"}
+    },
+    {"signal": "ID273UI_vehicleControl.UI_honkHorn", "request": "request.horn"},
+    {
+      "signal": "ID273UI_vehicleControl.UI_remoteClosureRequest",
+      "request": "request.closure",
+      "values": {"idle": "UI_REMOTE_CLOSURE_REQUEST_IDLE", "rear_trunk_move": "UI_REMOTE_CLOSURE_REQUEST_REAR_TRUNK_MOVE", "front_trunk_move": "UI_REMOTE_CLOSURE_REQUEST_FRONT_TRUNK_MOVE"}
+    },
+    {"signal": "ID273UI_vehicleControl.UI_frontLeftSeatHeatReq", "request": "request.seat_heat_front_left"},
+    {"signal": "ID273UI_vehicleControl.UI_frontRightSeatHeatReq", "request": "request.seat_heat_front_right"},
+    {"signal": "ID273UI_vehicleControl.UI_rearLeftSeatHeatReq", "request": "request.seat_heat_rear_left"},
+    {"signal": "ID273UI_vehicleControl.UI_rearCenterSeatHeatReq", "request": "request.seat_heat_rear_center"},
+    {"signal": "ID273UI_vehicleControl.UI_rearRightSeatHeatReq", "request": "request.seat_heat_rear_right"},
+    {"signal": "ID333UI_chargeRequest.UI_chargeEnableRequest", "request": "request.charge_enable"},
+    {"signal": "ID333UI_chargeRequest.UI_openChargePortDoorRequest", "request": "request.charge_port_open"},
+    {"signal": "ID333UI_chargeRequest.UI_closeChargePortDoorRequest", "request": "request.charge_port_close"},
+    {"signal": "ID333UI_chargeRequest.UI_chargeTerminationPct", "request": "request.charge_limit_pct"},
+    {"signal": "ID333UI_chargeRequest.UI_acChargeCurrentLimit", "request": "request.ac_current_limit_a"},
+    {
+      "signal": "ID2F3UI_hvacRequest.UI_hvacReqKeepClimateOn",
+      "request": "request.climate_keep",
+      "values": {"off": "KEEP_CLIMATE_ON_REQ_OFF", "keep": "KEEP_CLIMATE_ON_REQ_ON", "dog": "KEEP_CLIMATE_ON_REQ_DOG", "camp": "KEEP_CLIMATE_ON_REQ_PARTY"}
+    },
+    {"signal": "ID3B3UI_vehicleControl2.UI_batteryPreconditioningRequest", "request": "request.battery_precondition"},
+    {
+      "signal": "ID2F3UI_hvacRequest.UI_hvacReqUserPowerState",
+      "request": "request.climate_power",
+      "values": {"off": "OFF", "on": "ON", "precondition": "PRECONDITION"}
+    },
+    {"signal": "ID2F3UI_hvacRequest.UI_hvacReqTempSetpointLeft", "request": "request.climate_setpoint_c"},
+    {"signal": "ID2F3UI_hvacRequest.UI_hvacReqTempSetpointRight", "request": "request.climate_setpoint_c"},
+    {
+      "signal": "ID3B3UI_vehicleControl2.UI_lightSwitch",
+      "request": "request.lights",
+      "values": {"auto": "LIGHT_SWITCH_AUTO", "on": "LIGHT_SWITCH_ON", "parking": "LIGHT_SWITCH_PARKING", "off": "LIGHT_SWITCH_OFF"}
+    },
+    {
+      "signal": "ID3B3UI_vehicleControl2.UI_windowRequest",
+      "request": "request.windows",
+      "values": {"idle": "WINDOW_REQUEST_IDLE", "vent": "WINDOW_REQUEST_GOTO_VENT", "closed": "WINDOW_REQUEST_GOTO_CLOSED", "open": "WINDOW_REQUEST_GOTO_OPEN"}
+    }
+  ]
+}

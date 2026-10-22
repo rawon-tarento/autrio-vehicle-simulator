@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vehicle simulator</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #0f1216; --panel: #161a20; --card: #1d222a; --line: #2a313b;
+    --text: #e6e9ee; --muted: #8b95a3; --accent: #3b82f6; --accent-2: #60a5fa;
+    --ok: #22c55e; --warn: #f59e0b; --bad: #ef4444; --on: #facc15;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  .app { display: flex; height: 100vh; }
+  .map-wrap { position: relative; flex: 1; min-width: 0; }
+  #map { position: absolute; inset: 0; }
+  .shell { display: flex; flex: none; height: 100%; }
+  .rail { width: 92px; flex: none; background: var(--panel); border-left: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 6px; padding: 10px 8px; overflow-y: auto; }
+  .rail-btn { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 9px 4px; font-size: 12px; font-weight: 600; }
+  .rail-btn .chip { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+  .drawer { width: 0; overflow: hidden; background: var(--panel); border-left: 0 solid var(--line);
+    transition: width .18s ease; }
+  .drawer.open { width: 380px; border-left-width: 1px; }
+  .drawer-inner { width: 380px; height: 100%; overflow-y: auto; padding: 14px 14px 40px; }
+  .drawer-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .drawer-body > section { display: none; margin-bottom: 0; }
+  .drawer-body > section.show { display: block; }
+
+  .hud { position: absolute; top: 12px; left: 56px; right: 12px; z-index: 500; display: flex; gap: 8px;
+    pointer-events: none; flex-wrap: wrap; }
+  .hud .tile { pointer-events: auto; background: rgba(22,26,32,.92); border: 1px solid var(--line);
+    border-radius: 10px; padding: 8px 12px; min-width: 88px; backdrop-filter: blur(6px); }
+  .hud .k { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+  .hud .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hud .v small { font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 2px; }
+  .socbar { height: 4px; background: var(--line); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .socbar i { display: block; height: 100%; background: var(--ok); }
+  .map-tools { position: absolute; bottom: 18px; left: 12px; z-index: 500; display: flex; gap: 6px; }
+  .hint { position: absolute; bottom: 28px; right: 12px; z-index: 500;
+    background: rgba(22,26,32,.92); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; color: var(--muted); }
+
+  h1 { font-size: 15px; margin: 0; }
+  .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--muted); }
+  .dot.awake { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+  section h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 10px;
+    display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+  .row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+  .row:last-child { margin-bottom: 0; }
+  .grow { flex: 1; }
+  .muted { color: var(--muted); }
+  .chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--text); text-transform: none; letter-spacing: 0; }
+  .chip.ok { background: rgba(34,197,94,.18); color: #86efac; }
+  .chip.warn { background: rgba(245,158,11,.18); color: #fcd34d; }
+  .chip.info { background: rgba(59,130,246,.2); color: #93c5fd; }
+
+  button { font: inherit; color: var(--text); background: #262c36; border: 1px solid var(--line); border-radius: 8px;
+    padding: 7px 10px; cursor: pointer; transition: background .12s, border-color .12s; }
+  button:hover { background: #2e3541; }
+  button:active { transform: translateY(1px); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: white; }
+  button.primary:hover { background: #2563eb; }
+  button.danger { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.4); color: #fca5a5; }
+  button.active { background: rgba(59,130,246,.22); border-color: var(--accent); color: #bfdbfe; }
+  button.lit { background: rgba(250,204,21,.18); border-color: var(--on); color: #fde68a; }
+  button.moving { border-style: dashed; border-color: var(--warn); color: #fcd34d; }
+  button:disabled, button.blocked {
+    opacity: 0.38; cursor: not-allowed; transform: none; background: #1a1f26; }
+  button:disabled:hover, button.blocked:hover { background: #1a1f26; }
+  .switch.blocked { opacity: 0.38; cursor: not-allowed; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; border-right: 1px solid var(--line); background: #222831; }
+  .seg button:last-child { border-right: 0; }
+  .seg button.active { background: rgba(59,130,246,.28); color: #dbeafe; }
+  input[type=number], input[type=search], select { font: inherit; color: var(--text); background: #11151a; border: 1px solid var(--line);
+    border-radius: 8px; padding: 6px 8px; }
+  input[type=number] { width: 80px; }
+  input[type=search] { flex: 1; min-width: 0; width: 100%; }
+  .dest-hits { display: flex; flex-direction: column; gap: 2px; margin: 0 0 8px; }
+  .dest-hits button { text-align: left; font-weight: 400; font-size: 12px; line-height: 1.35; }
+  input[type=range] { flex: 1; accent-color: var(--accent); }
+
+  .switch { position: relative; width: 38px; height: 22px; background: #2a313b; border-radius: 999px; cursor: pointer; flex: none;
+    transition: background .15s; border: 1px solid var(--line); }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+    background: #cbd5e1; transition: left .15s; }
+  .switch.on { background: var(--accent); border-color: var(--accent); }
+  .switch.on::after { left: 18px; background: white; }
+
+  .car-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .car-diagram button { text-align: left; }
+  .car-diagram .full { grid-column: span 2; text-align: center; }
+  .state { display: block; font-size: 11px; color: var(--muted); }
+  .seats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .seats .front { grid-column: span 1; }
+  .levels { display: inline-flex; gap: 2px; margin-left: 4px; vertical-align: middle; }
+  .levels i { width: 5px; height: 10px; border-radius: 1px; background: var(--line); }
+  .levels i.on { background: #f97316; }
+  .temp { font-size: 22px; font-weight: 600; min-width: 70px; text-align: center; font-variant-numeric: tabular-nums; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; font-variant-numeric: tabular-nums; }
+  .kv span:nth-child(odd) { color: var(--muted); }
+  details summary { cursor: pointer; color: var(--muted); }
+  .signals { max-height: calc(100vh - 140px); overflow: auto; margin-top: 8px; font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .signals div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px solid #222831; }
+  .nav-msg { color: #fca5a5; font-size: 12px; }
+  .hint-line { color: var(--muted); font-size: 12px; flex: 1; min-width: 140px; }
+
+  .car-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+  .car-icon svg { transition: transform .2s linear; filter: drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
+  .dest-icon { font-size: 22px; line-height: 22px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div class="hud">
+      <div class="tile"><div class="k">Mode</div><div class="v" id="hud-mode">—</div></div>
+      <div class="tile"><div class="k">Speed</div><div class="v"><span id="hud-speed">0</span><small>km/h</small></div></div>
+      <div class="tile"><div class="k">Gear</div><div class="v" id="hud-gear">P</div></div>
+      <div class="tile"><div class="k">Battery</div><div class="v"><span id="hud-soc">—</span><small>%</small></div>
+        <div class="socbar"><i id="hud-socbar"></i></div></div>
+      <div class="tile"><div class="k">Power</div><div class="v"><span id="hud-power">0</span><small>kW</small></div></div>
+      <div class="tile"><div class="k">Odometer</div><div class="v"><span id="hud-odo">0</span><small>km</small></div></div>
+      <div class="tile"><div class="k">Outside</div><div class="v"><span id="hud-amb">—</span><small>°C</small></div></div>
+      <div class="tile"><div class="k">Route</div><div class="v"><span id="hud-route">—</span></div></div>
+    </div>
+    <div class="map-tools">
+      <button id="follow" class="active" title="Keep the car in view">Follow car</button>
+      <button id="recenter">Center</button>
+    </div>
+    <div class="hint" id="hint">Search a place or click the map</div>
+  </div>
+
+  <aside class="shell">
+    <div class="drawer" id="drawer">
+      <div class="drawer-inner">
+        <div class="drawer-head">
+          <h1><span class="dot" id="awake-dot"></span><span id="drawer-title">Car</span></h1>
+          <button id="drawer-close" title="Close panel">Close</button>
+        </div>
+        <div class="drawer-body">
+    <section data-panel="car">
+      <h2>Car</h2>
+      <div class="row">
+        <button id="enter">Get in</button>
+        <button id="leave">Get out</button>
+        <button id="wake">Wake</button>
+        <button id="sleep">Sleep</button>
+      </div>
+    </section>
+
+    <section data-panel="drive">
+      <h2>Drive</h2>
+      <div class="row">
+        <input type="search" id="dest-q" placeholder="Search a place" autocomplete="off" spellcheck="false">
+        <button id="dest-home" title="Drive home">Home</button>
+      </div>
+      <div class="dest-hits" id="dest-hits" hidden></div>
+      <div class="row"><span class="muted">To</span><span class="grow" id="dest-text">search or click the map</span></div>
+      <div class="row">
+        <div class="seg" id="style">
+          <button data-v="smooth" class="active">Smooth</button><button data-v="aggressive">Aggressive</button>
+        </div>
+        <select id="traffic"><option value="light">Light traffic</option><option value="moderate">Moderate</option><option value="heavy">Heavy</option></select>
+      </div>
+      <div class="row">
+        <span class="muted">Speed cap</span><input type="number" id="speed-cap" placeholder="card" min="10" max="200" step="5">
+        <span class="muted">km/h</span>
+        <span class="grow"></span>
+        <button class="primary" id="drive">Drive</button>
+        <button class="danger" id="stop">Stop</button>
+      </div>
+      <div class="nav-msg" id="nav-msg"></div>
+    </section>
+
+    <section data-panel="charge">
+      <h2>Charge</h2>
+      <div class="row">
+        <button id="plug-ac">Plug AC</button>
+        <button id="plug-fast">Plug DC</button>
+        <button id="unplug">Unplug</button>
+        <button id="port" class="grow">Port <span class="state" id="port-s">—</span></button>
+      </div>
+      <div class="row">
+        <span class="muted">Enable</span>
+        <div class="switch" id="charging" title="Setting: whether a session may start once a cable is in and the car is in Park"></div>
+        <span class="hint-line" id="charge-enable-hint">—</span>
+      </div>
+      <div class="row">
+        <span class="muted">Limit</span>
+        <input type="range" id="limit" min="50" max="100" step="1">
+        <span id="limit-v" style="width:38px;text-align:right">—</span>
+      </div>
+      <div class="row">
+        <span class="muted">AC current</span><input type="number" id="amps" min="5" max="48" step="1" style="width:64px"><span class="muted">A</span>
+        <span class="grow"></span>
+        <span class="muted">Start at</span><input type="time" id="schedule"><button id="schedule-clear">Now</button>
+      </div>
+      <div class="kv">
+        <span>Line</span><span id="c-line">—</span>
+        <span>DC station</span><span id="c-dc">—</span>
+        <span>Into pack</span><span id="c-pack">—</span>
+        <span>Latch</span><span id="c-latch">—</span>
+        <span>Time to limit</span><span id="c-ttf">—</span>
+        <span>Added this session</span><span id="c-kwh">—</span>
+      </div>
+    </section>
+
+    <section data-panel="doors">
+      <h2>Doors and locks</h2>
+      <div class="row">
+        <button id="lock" class="grow">Lock</button>
+        <button id="unlock" class="grow">Unlock</button>
+      </div>
+      <div class="car-diagram">
+        <button class="full" data-closure="frunk">Frunk <span class="state"></span></button>
+        <button data-door="front_left">Front left <span class="state"></span></button>
+        <button data-door="front_right">Front right <span class="state"></span></button>
+        <button data-door="rear_left">Rear left <span class="state"></span></button>
+        <button data-door="rear_right">Rear right <span class="state"></span></button>
+        <button class="full" data-closure="trunk">Trunk <span class="state"></span></button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <span class="muted">Windows</span><span class="grow"></span>
+        <div class="seg" id="windows"><button data-v="closed">Closed</button><button data-v="vent">Vent</button><button data-v="open">Open</button></div>
+      </div>
+    </section>
+
+    <section data-panel="climate">
+      <h2>Climate</h2>
+      <div class="row">
+        <span class="muted">Climate</span><div class="switch" id="climate"></div>
+        <span class="grow"></span>
+        <button id="t-down">−</button><span class="temp" id="setpoint">—</span><button id="t-up">+</button>
+      </div>
+      <div class="row">
+        <div class="seg" id="climate-mode"><button data-v="off">Off</button><button data-v="on">On</button><button data-v="keep">Keep</button><button data-v="dog">Dog</button><button data-v="camp">Camp</button></div>
+      </div>
+      <div class="row">
+        <span class="muted">Battery precondition</span><div class="switch" id="bprecond"></div>
+        <span class="grow"></span>
+        <span class="muted">Overheat</span>
+        <select id="overheat"><option value="ac">A/C</option><option value="fan">Fan</option><option value="off">Off</option></select>
+      </div>
+      <div class="row muted">Cabin <span id="cabin" style="color:var(--text)">—</span></div>
+      <div class="kv">
+        <span>HVAC</span><span id="h-power">—</span>
+        <span>Blower</span><span id="h-blower">—</span>
+        <span>Sun</span><span id="h-sun">—</span>
+      </div>
+      <div class="seats" id="seats">
+        <button data-seat="front_left">Driver<span class="levels"></span></button>
+        <span></span>
+        <button data-seat="front_right">Passenger<span class="levels"></span></button>
+        <button data-seat="rear_left">Rear L<span class="levels"></span></button>
+        <button data-seat="rear_center">Rear C<span class="levels"></span></button>
+        <button data-seat="rear_right">Rear R<span class="levels"></span></button>
+      </div>
+    </section>
+
+    <section data-panel="lights">
+      <h2>Lights and horn</h2>
+      <div class="row">
+        <div class="seg" id="lights"><button data-v="auto">Auto</button><button data-v="on">On</button><button data-v="parking">Parking</button><button data-v="off">Off</button></div>
+        <span class="grow"></span>
+        <button id="honk">Honk</button>
+      </div>
+    </section>
+
+    <section data-panel="battery">
+      <h2>Battery</h2>
+      <div class="kv">
+        <span>Voltage</span><span id="b-v">—</span>
+        <span>Current</span><span id="b-a">—</span>
+        <span>Pack temperature</span><span id="b-t">—</span>
+        <span>Energy left</span><span id="b-e">—</span>
+        <span>Health</span><span id="b-h">—</span>
+        <span>BMS limits</span><span id="b-lim">—</span>
+        <span>Thermal</span><span id="b-th">—</span>
+        <span>12 V</span><span id="b-lv">—</span>
+      </div>
+    </section>
+
+    <section data-panel="signals">
+      <h2>All signals</h2>
+      <div class="signals" id="signals"></div>
+    </section>
+        </div>
+      </div>
+    </div>
+    <nav class="rail" id="rail">
+      <button class="rail-btn" data-panel="car" title="Power and occupancy">Car<span class="chip" id="rail-car">—</span></button>
+      <button class="rail-btn" data-panel="drive" title="Route and motion">Drive<span class="chip" id="drive-chip">parked</span></button>
+      <button class="rail-btn" data-panel="charge" title="Cable and charge enable">Charge<span class="chip" id="charge-chip">—</span></button>
+      <button class="rail-btn" data-panel="doors" title="Locks, doors, windows">Doors<span class="chip" id="lock-chip">—</span></button>
+      <button class="rail-btn" data-panel="climate" title="Cabin and HVAC">Climate<span class="chip" id="climate-chip">—</span></button>
+      <button class="rail-btn" data-panel="lights" title="Lights and horn">Lights<span class="chip" id="beam-chip">—</span></button>
+      <button class="rail-btn" data-panel="battery" title="Pack and 12 V">Battery<span class="chip" id="rail-battery">—</span></button>
+      <button class="rail-btn" data-panel="signals" title="Every plant signal">Signals</button>
+    </nav>
+  </aside>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const send = (command, fields = {}) =>
+  fetch("/command", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command, ...fields }) });
+
+let S = null;
+let routeId = -1, route = null;
+let pickedDest = null;
+let destLabel = null;
+let follow = true;
+let editingLimit = false;
+let searchTimer = 0;
+
+const blockReason = (key) => (S && S.blocked && S.blocked[key]) || "";
+const driveDest = () => pickedDest || (S && S.destination) || null;
+function setBlocked(el, reason) {
+  if (!el) return;
+  const off = !!reason;
+  el.disabled = off;
+  el.classList.toggle("blocked", off);
+  el.title = reason || "";
+}
+
+const HOME = [12.90873, 77.609752];
+const map = L.map("map", { zoomControl: true }).setView(HOME, 16);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+const carSvg = `<svg width="22" height="34" viewBox="0 0 22 34" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1.5" y="1.5" width="19" height="31" rx="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <rect x="5" y="7" width="12" height="7" rx="2" fill="#bfdbfe"/>
+  <rect x="5" y="22" width="12" height="5" rx="2" fill="#93c5fd"/>
+  <rect x="4" y="2.5" width="4" height="2" rx="1" fill="#fef3c7"/><rect x="14" y="2.5" width="4" height="2" rx="1" fill="#fef3c7"/>
+</svg>`;
+const carIcon = L.divIcon({ className: "", html: `<div class="car-icon" id="car-el">${carSvg}</div>`, iconSize: [26, 34], iconAnchor: [13, 17] });
+const carMarker = L.marker(HOME, { icon: carIcon, zIndexOffset: 1000 }).addTo(map);
+const destMarker = L.marker([0, 0], { icon: L.divIcon({ className: "", html: '<div class="dest-icon">📍</div>', iconSize: [22, 22], iconAnchor: [11, 22] }) });
+
+const routeCasing = L.polyline([], { color: "#1e3a8a", weight: 9, opacity: 0.35 }).addTo(map);
+const routeAhead = L.polyline([], { color: "#3b82f6", weight: 6, opacity: 0.95 }).addTo(map);
+const routeDone = L.polyline([], { color: "#94a3b8", weight: 6, opacity: 0.9 }).addTo(map);
+
+let shown = null, target = null, animFrom = null, animStart = 0;
+const ANIM_MS = 250;
+
+map.on("click", (e) => pickDest(e.latlng.lat, e.latlng.lng, null));
+map.on("dragstart", () => setFollow(false));
+
+function pickDest(lat, lon, label) {
+  pickedDest = [lat, lon];
+  destLabel = label || null;
+  destMarker.setLatLng(pickedDest).addTo(map);
+  $("dest-hits").hidden = true;
+  $("dest-hits").innerHTML = "";
+  renderDest();
+}
+function homePin() {
+  return (S && S.home) || HOME;
+}
+$("dest-home").onclick = () => {
+  const h = homePin();
+  pickDest(h[0], h[1], "Home");
+  setFollow(false);
+  map.panTo(h);
+};
+$("dest-q").addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  const q = $("dest-q").value.trim();
+  if (q.length < 2) { $("dest-hits").hidden = true; $("dest-hits").innerHTML = ""; return; }
+  searchTimer = setTimeout(() => searchPlace(q), 280);
+});
+$("dest-q").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    clearTimeout(searchTimer);
+    const q = $("dest-q").value.trim();
+    if (q.length >= 2) searchPlace(q);
+  }
+  if (e.key === "Escape") { $("dest-hits").hidden = true; }
+});
+async function searchPlace(q) {
+  const box = $("dest-hits");
+  box.hidden = false;
+  box.innerHTML = `<button type="button" disabled>Looking up…</button>`;
+  try {
+    const r = await fetch("/geocode?q=" + encodeURIComponent(q), { cache: "no-store" });
+    const body = await r.json();
+    const hits = body.results || [];
+    if (!hits.length) { box.innerHTML = `<button type="button" disabled>No places found</button>`; return; }
+    box.innerHTML = hits.map((h, i) => `<button type="button" data-hit="${i}">${h.label}</button>`).join("");
+    box.querySelectorAll("[data-hit]").forEach((b) => {
+      b.onclick = () => {
+        const h = hits[Number(b.dataset.hit)];
+        pickDest(h.lat, h.lon, (h.label.split(",")[0] || h.label).trim());
+        $("dest-q").value = "";
+        setFollow(false);
+        map.setView([h.lat, h.lon], 16);
+      };
+    });
+  } catch (err) {
+    box.innerHTML = `<button type="button" disabled>Lookup failed</button>`;
+  }
+}
+
+function setFollow(on) { follow = on; $("follow").classList.toggle("active", on); }
+$("follow").onclick = () => setFollow(!follow);
+$("recenter").onclick = () => { if (shown) map.panTo(shown); };
+
+function renderDest() {
+  const d = (S && S.destination) || pickedDest;
+  $("dest-text").textContent = destLabel || (d ? `${d[0].toFixed(5)}, ${d[1].toFixed(5)}` : "search or click the map");
+  $("hint").style.display = d ? "none" : "";
+}
+
+// ---- controls ----
+let style = "smooth";
+document.querySelectorAll("#style button").forEach((b) => b.onclick = () => {
+  style = b.dataset.v;
+  document.querySelectorAll("#style button").forEach((x) => x.classList.toggle("active", x === b));
+});
+$("drive").onclick = () => {
+  if (blockReason("drive") || !driveDest()) return;
+  const dest = driveDest();
+  const fields = { lat: dest[0], lon: dest[1], style, traffic: $("traffic").value };
+  const cap = parseFloat($("speed-cap").value);
+  if (!isNaN(cap)) fields.speed_kph = cap;
+  send("drive", fields);
+};
+$("stop").onclick = () => { if (!blockReason("stop")) send("stop"); };
+$("enter").onclick = () => { if (!blockReason("enter")) send("enter"); };
+$("leave").onclick = () => { if (!blockReason("leave")) send("leave"); };
+$("wake").onclick = () => send("wake");
+$("sleep").onclick = () => { if (!blockReason("sleep")) send("sleep"); };
+$("plug-ac").onclick = () => { if (!blockReason("plug_ac")) send("plug", { type: "ac" }); };
+$("plug-fast").onclick = () => { if (!blockReason("plug_fast")) send("plug", { type: "fast" }); };
+$("unplug").onclick = () => { if (!blockReason("unplug")) send("unplug"); };
+$("charging").onclick = () => send("charging", { on: !(S && S.signals["charge.enabled"]) });
+$("limit").oninput = () => { editingLimit = true; $("limit-v").textContent = $("limit").value + "%"; };
+$("limit").onchange = () => { send("charge_limit", { pct: parseFloat($("limit").value) }); setTimeout(() => editingLimit = false, 600); };
+$("port").onclick = () => {
+  const open = !isOpen(S && S.signals["charge.port_door"]);
+  if (blockReason(open ? "charge_port_open" : "charge_port_close")) return;
+  send("charge_port", { open });
+};
+let editingAmps = false;
+$("amps").onfocus = () => editingAmps = true;
+$("amps").onchange = () => { send("charge_current", { amps: parseFloat($("amps").value) }); editingAmps = false; };
+$("schedule").onchange = () => send("charge_schedule", { start: $("schedule").value || null });
+$("schedule-clear").onclick = () => { $("schedule").value = ""; send("charge_schedule", { start: null }); };
+document.querySelectorAll("#climate-mode button").forEach((b) => b.onclick = () => {
+  if (blockReason("climate_" + b.dataset.v)) return;
+  send("climate_mode", { mode: b.dataset.v });
+});
+$("bprecond").onclick = () => send("battery_precondition", { on: !(S && S.signals["thermal.battery_precondition"]) });
+$("overheat").onchange = () => send("overheat_protection", { mode: $("overheat").value });
+$("lock").onclick = () => { if (!blockReason("lock")) send("lock"); };
+$("unlock").onclick = () => { if (!blockReason("unlock")) send("unlock"); };
+document.querySelectorAll("[data-door]").forEach((b) => b.onclick = () => {
+  const open = !isOpen(S && S.signals["body.door_" + b.dataset.door]);
+  if (open && blockReason("door_" + b.dataset.door + "_open")) return;
+  send("door", { door: b.dataset.door, open });
+});
+document.querySelectorAll("[data-closure]").forEach((b) => b.onclick = () => {
+  const open = !isOpen(S && S.signals["body." + b.dataset.closure]);
+  if (open && blockReason(b.dataset.closure + "_open")) return;
+  send(b.dataset.closure, { open });
+});
+document.querySelectorAll("#windows button").forEach((b) => b.onclick = () => send("windows", { position: b.dataset.v }));
+$("climate").onclick = () => send("climate", { on: !(S && S.signals["climate.mode"] !== "off") });
+$("t-down").onclick = () => S && send("temperature", { c: Math.max(15, S.signals["climate.setpoint_c"] - 0.5) });
+$("t-up").onclick = () => S && send("temperature", { c: Math.min(28, S.signals["climate.setpoint_c"] + 0.5) });
+document.querySelectorAll("[data-seat]").forEach((b) => b.onclick = () => {
+  const level = S ? S.signals["climate.seat_heat_" + b.dataset.seat] : 0;
+  send("seat_heater", { seat: b.dataset.seat, level: (level + 1) % 4 });
+});
+document.querySelectorAll("#lights button").forEach((b) => b.onclick = () => send("lights", { mode: b.dataset.v }));
+$("honk").onclick = () => send("honk");
+
+const isOpen = (s) => s === "open" || s === "opening";
+
+const PANEL_TITLES = { car: "Car", drive: "Drive", charge: "Charge", doors: "Doors", climate: "Climate", lights: "Lights", battery: "Battery", signals: "Signals" };
+let openPanel = null;
+function setPanel(id) {
+  openPanel = !id || openPanel === id ? null : id;
+  $("drawer").classList.toggle("open", !!openPanel);
+  document.querySelectorAll(".rail-btn").forEach((b) => b.classList.toggle("active", b.dataset.panel === openPanel));
+  document.querySelectorAll(".drawer-body > section").forEach((s) => s.classList.toggle("show", s.dataset.panel === openPanel));
+  if (openPanel) $("drawer-title").textContent = PANEL_TITLES[openPanel];
+  setTimeout(() => map.invalidateSize(), 200);
+}
+document.querySelectorAll(".rail-btn").forEach((b) => { b.onclick = () => setPanel(b.dataset.panel); });
+$("drawer-close").onclick = () => setPanel(null);
+
+// ---- state ----
+async function poll() {
+  try {
+    const r = await fetch("/state", { cache: "no-store" });
+    S = await r.json();
+    if (S.route_id !== routeId) {
+      routeId = S.route_id;
+      route = await (await fetch("/route", { cache: "no-store" })).json();
+      drawRouteFull();
+    }
+    render();
+  } catch (e) { /* the car may be restarting */ }
+  setTimeout(poll, 200);
+}
+
+function drawRouteFull() {
+  if (!route) { routeCasing.setLatLngs([]); routeAhead.setLatLngs([]); routeDone.setLatLngs([]); return; }
+  routeCasing.setLatLngs(route.points);
+  map.fitBounds(L.latLngBounds(route.points), { padding: [60, 60], maxZoom: 16 });
+  setFollow(true);
+}
+
+function splitRoute(pos) {
+  if (!route) return;
+  const t = S.travelled_m, s = route.s_m;
+  let lo = 0, hi = s.length - 1;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (s[mid] <= t) lo = mid + 1; else hi = mid; }
+  routeDone.setLatLngs([...route.points.slice(0, lo), pos]);
+  routeAhead.setLatLngs([pos, ...route.points.slice(lo)]);
+}
+
+function render() {
+  const g = S.signals;
+  const pos = S.position || [g["vehicle.latitude_deg"], g["vehicle.longitude_deg"]];
+  if (!shown) { shown = pos; carMarker.setLatLng(pos); map.setView(pos, 15); }
+  animFrom = shown; target = pos; animStart = performance.now();
+  const el = document.getElementById("car-el");
+  if (el) el.firstElementChild.style.transform = `rotate(${g["vehicle.heading_deg"]}deg)`;
+  if (S.destination) { pickedDest = null; destMarker.setLatLng(S.destination).addTo(map); }
+  else if (!pickedDest) { destMarker.remove(); destLabel = null; }
+  renderDest();
+
+  $("hud-mode").textContent = g["vehicle.power_state"] === "waking" ? "waking" : S.mode;
+  $("hud-amb").textContent = g["environment.ambient_c"].toFixed(1);
+  $("hud-speed").textContent = Math.round(g["vehicle.speed_kph"]);
+  $("hud-gear").textContent = g["vehicle.gear"] === "drive" ? "D" : "P";
+  $("hud-soc").textContent = g["battery.soc_pct"].toFixed(1);
+  $("hud-socbar").style.width = g["battery.soc_pct"] + "%";
+  $("hud-socbar").style.background = g["battery.soc_pct"] < 20 ? "var(--bad)" : "var(--ok)";
+  $("hud-power").textContent = S.power_kw.toFixed(1);
+  $("hud-odo").textContent = g["vehicle.odometer_km"].toFixed(1);
+  $("hud-route").textContent = route ? `${(S.travelled_m / 1000).toFixed(2)} / ${(route.length_m / 1000).toFixed(2)} km` : "—";
+
+  $("awake-dot").classList.toggle("awake", !!g["vehicle.awake"]);
+  $("rail-car").textContent = g["vehicle.awake"] ? (g["vehicle.occupied"] ? "in car" : "awake") : "asleep";
+  $("rail-battery").textContent = g["battery.soc_pct"].toFixed(0) + "%";
+  const driveChip = $("drive-chip");
+  driveChip.textContent = S.planning ? "finding route…" : (g["vehicle.gear"] === "drive" ? "driving" : (g["vehicle.awake"] ? (g["vehicle.occupied"] ? "parked, occupied" : "parked") : "asleep"));
+  driveChip.className = "chip " + (S.planning ? "warn" : g["vehicle.gear"] === "drive" ? "info" : "");
+  $("nav-msg").textContent = S.nav_error || "";
+
+  const cs = g["charge.status"];
+  const stageText = { none: "no cable", connected: "plugged, held", handshake: "talking to charger", cable_check: "cable check",
+    precharge: "precharge", ramp: "ramping up", charging: "charging", complete: "complete" };
+  const stage = g["charge.stage"];
+  const plugged = g["charge.plug"] !== "none";
+  const enableOn = !!g["charge.enabled"];
+  const flowing = stage === "ramp" || stage === "charging";
+  $("charge-chip").textContent = stageText[stage] || stage;
+  $("charge-chip").className = "chip " + (cs === "enabled" && flowing ? "ok" : cs === "standby" ? "info" : cs === "inactive" ? "" : "warn");
+  $("charge-enable-hint").textContent = chargeEnableHint(g);
+  if (!editingAmps) $("amps").value = g["charge.ac_limit_a"];
+  if (document.activeElement !== $("schedule")) $("schedule").value = g["charge.schedule"] === "none" ? "" : g["charge.schedule"];
+  $("c-line").textContent = plugged && g["charge.line_power_kw"] > 0
+    ? `${g["charge.line_voltage_v"].toFixed(0)} V · ${g["charge.line_current_a"].toFixed(1)} A · ${g["charge.line_power_kw"].toFixed(2)} kW` : "—";
+  $("c-dc").textContent = plugged && g["charge.evse_dc_voltage_v"] > 0
+    ? `${g["charge.evse_dc_voltage_v"].toFixed(0)} V · ${g["charge.evse_dc_current_a"].toFixed(0)} A` : "—";
+  $("c-pack").textContent = plugged && flowing ? g["charge.power_kw"].toFixed(2) + " kW" : "—";
+  $("c-latch").textContent = plugged ? g["charge.latch"] : "—";
+  $("c-ttf").textContent = plugged && g["charge.hours_to_full"] > 0 ? g["charge.hours_to_full"].toFixed(1) + " h" : "—";
+  $("c-kwh").textContent = plugged ? g["charge.session_kwh"].toFixed(2) + " kWh" : "—";
+  $("plug-ac").classList.toggle("active", g["charge.plug"] === "ac");
+  $("plug-fast").classList.toggle("active", g["charge.plug"] === "fast");
+  $("charging").classList.toggle("on", enableOn);
+  if (!editingLimit) { $("limit").value = g["charge.limit_pct"]; $("limit-v").textContent = Math.round(g["charge.limit_pct"]) + "%"; }
+  closureButton($("port"), g["charge.port_door"], $("port-s"));
+
+  $("lock-chip").textContent = g["body.locked"] ? "locked" : "unlocked";
+  $("lock-chip").className = "chip " + (g["body.locked"] ? "ok" : "warn");
+  $("lock").classList.toggle("active", !!g["body.locked"]);
+  $("unlock").classList.toggle("active", !g["body.locked"]);
+  document.querySelectorAll("[data-door]").forEach((b) => closureButton(b, g["body.door_" + b.dataset.door]));
+  document.querySelectorAll("[data-closure]").forEach((b) => closureButton(b, g["body." + b.dataset.closure]));
+  segActive("windows", g["body.windows"]);
+
+  const climateOn = g["climate.power_state"] !== "off";
+  $("climate").classList.toggle("on", g["climate.mode"] !== "off");
+  $("climate-chip").textContent = g["climate.overheat_active"] ? "overheat protection" : g["climate.mode"];
+  $("climate-chip").className = "chip " + (climateOn ? "ok" : "");
+  segActive("climate-mode", g["climate.mode"]);
+  $("bprecond").classList.toggle("on", !!g["thermal.battery_precondition"]);
+  if (document.activeElement !== $("overheat")) $("overheat").value = g["climate.overheat_protection"];
+  $("h-power").textContent = `${g["climate.hvac_power_kw"].toFixed(2)} kW${g["climate.ac_running"] ? " · compressor" : ""}${g["climate.ptc_kw"] > 0 ? " · PTC" : ""}`;
+  $("h-blower").textContent = Math.round(g["climate.blower_pct"]) + " %";
+  $("h-sun").textContent = `${Math.round(g["environment.solar_w_m2"])} W/m² · ${g["environment.weather_source"]}`;
+  $("setpoint").textContent = g["climate.setpoint_c"].toFixed(1) + "°";
+  $("cabin").textContent = g["climate.cabin_c"].toFixed(1) + " °C";
+  document.querySelectorAll("[data-seat]").forEach((b) => {
+    const level = g["climate.seat_heat_" + b.dataset.seat];
+    b.querySelector(".levels").innerHTML = [1, 2, 3].map((n) => `<i class="${n <= level ? "on" : ""}"></i>`).join("");
+    b.classList.toggle("active", level > 0);
+  });
+
+  segActive("lights", g["lights.mode"]);
+  const beam = g["lights.low_beam"] === "on";
+  $("beam-chip").textContent = beam ? "low beam on" : "low beam off";
+  $("beam-chip").className = "chip " + (beam ? "warn" : "");
+  $("honk").classList.toggle("lit", !!g["body.horn_on"]);
+
+  $("b-v").textContent = g["battery.pack_voltage_v"].toFixed(1) + " V";
+  $("b-a").textContent = g["battery.pack_current_a"].toFixed(1) + " A";
+  $("b-t").textContent = `${g["battery.temp_min_c"].toFixed(1)} – ${g["battery.temp_max_c"].toFixed(1)} °C`;
+  $("b-e").textContent = g["battery.nominal_energy_remaining_kwh"].toFixed(2) + " kWh";
+  $("b-h").textContent = g["battery.soh_pct"].toFixed(1) + " %";
+  $("b-lim").textContent = `out ${g["battery.max_discharge_kw"].toFixed(0)} kW · in ${g["battery.max_charge_kw"].toFixed(0)} kW`;
+  const th = g["thermal.battery_heater_kw"] > 0 ? `heating ${g["thermal.battery_heater_kw"].toFixed(1)} kW`
+    : g["thermal.battery_cooling_kw"] > 0 ? `cooling ${g["thermal.battery_cooling_kw"].toFixed(1)} kW` : "passive";
+  $("b-th").textContent = th;
+  $("b-lv").textContent = `${g["lv.voltage_v"].toFixed(2)} V · ${g["lv.soc_pct"].toFixed(0)} %${g["dcdc.active"] ? " · DC-DC on" : ""}`;
+
+  applyBlocked(g);
+
+  if (openPanel === "signals") {
+    $("signals").innerHTML = Object.keys(g).sort().map((k) => {
+      const v = typeof g[k] === "number" ? +g[k].toFixed(4) : g[k];
+      return `<div><span>${k}</span><span>${v}</span></div>`;
+    }).join("");
+  }
+}
+
+function chargeEnableHint(g) {
+  const on = !!g["charge.enabled"];
+  const plug = g["charge.plug"] !== "none";
+  const stage = g["charge.stage"];
+  const driving = g["vehicle.gear"] === "drive";
+  if (!on) return plug ? "Held off — cable is in" : "Off — will not charge on plug-in";
+  if (!plug) return driving ? "On next plug, after you park" : "On next plug";
+  if (stage === "charging" || stage === "ramp") return "Session running";
+  if (stage === "complete") return "At the limit";
+  if (stage === "connected") return "Cable in — waiting to start";
+  return "Starting";
+}
+
+function applyBlocked(g) {
+  const dest = driveDest();
+  setBlocked($("drive"), blockReason("drive") || (S.planning && "finding a route") || (!dest && "click the map to pick a destination"));
+  setBlocked($("stop"), blockReason("stop"));
+  setBlocked($("sleep"), blockReason("sleep"));
+  setBlocked($("enter"), blockReason("enter"));
+  setBlocked($("leave"), blockReason("leave"));
+  setBlocked($("plug-ac"), blockReason("plug_ac"));
+  setBlocked($("plug-fast"), blockReason("plug_fast"));
+  setBlocked($("unplug"), blockReason("unplug"));
+  setBlocked($("lock"), blockReason("lock"));
+  setBlocked($("unlock"), blockReason("unlock"));
+  const portOpen = isOpen(g["charge.port_door"]);
+  setBlocked($("port"), blockReason(portOpen ? "charge_port_close" : "charge_port_open"));
+  document.querySelectorAll("[data-door]").forEach((b) => {
+    const open = isOpen(g["body.door_" + b.dataset.door]);
+    setBlocked(b, open ? "" : blockReason("door_" + b.dataset.door + "_open"));
+  });
+  document.querySelectorAll("[data-closure]").forEach((b) => {
+    const open = isOpen(g["body." + b.dataset.closure]);
+    setBlocked(b, open ? "" : blockReason(b.dataset.closure + "_open"));
+  });
+  document.querySelectorAll("#climate-mode button").forEach((b) => {
+    setBlocked(b, blockReason("climate_" + b.dataset.v));
+  });
+}
+
+function closureButton(b, state, label) {
+  (label || b.querySelector(".state")).textContent = state;
+  b.classList.toggle("active", state === "open");
+  b.classList.toggle("moving", state === "opening" || state === "closing");
+}
+function segActive(id, value) {
+  document.querySelectorAll(`#${id} button`).forEach((b) => b.classList.toggle("active", b.dataset.v === value));
+}
+
+function animate(now) {
+  if (target && animFrom) {
+    const k = Math.min(1, (now - animStart) / ANIM_MS);
+    shown = [animFrom[0] + (target[0] - animFrom[0]) * k, animFrom[1] + (target[1] - animFrom[1]) * k];
+    carMarker.setLatLng(shown);
+    if (route) splitRoute(shown);
+    if (follow && !map.getBounds().pad(-0.25).contains(shown)) map.panTo(shown, { animate: true });
+  }
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+poll();
+</script>
+</body>
+</html>

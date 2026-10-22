@@ -1,0 +1,1167 @@
+{
+  "score": {
+    "earned": 80.0,
+    "possible": 90.0,
+    "pct": 88.9,
+    "grade": "B",
+    "counts": {
+      "pass": 20,
+      "fair": 4,
+      "weak": 3,
+      "fail": 0
+    },
+    "n_checks": 27
+  },
+  "categories": {
+    "Cycle energy (EPA)": {
+      "earned": 18.0,
+      "possible": 18.0,
+      "pct": 100.0,
+      "grade": "A",
+      "counts": {
+        "pass": 3,
+        "fair": 0,
+        "weak": 0,
+        "fail": 0
+      },
+      "n_checks": 3
+    },
+    "Cycle energy (FASTSim)": {
+      "earned": 5.0,
+      "possible": 9.0,
+      "pct": 55.6,
+      "grade": "F",
+      "counts": {
+        "pass": 0,
+        "fair": 2,
+        "weak": 1,
+        "fail": 0
+      },
+      "n_checks": 3
+    },
+    "Speed tracking": {
+      "earned": 8.0,
+      "possible": 9.0,
+      "pct": 88.9,
+      "grade": "B",
+      "counts": {
+        "pass": 2,
+        "fair": 1,
+        "weak": 0,
+        "fail": 0
+      },
+      "n_checks": 3
+    },
+    "Road load": {
+      "earned": 8.0,
+      "possible": 9.0,
+      "pct": 88.9,
+      "grade": "B",
+      "counts": {
+        "pass": 2,
+        "fair": 1,
+        "weak": 0,
+        "fail": 0
+      },
+      "n_checks": 3
+    },
+    "DC charge": {
+      "earned": 12.0,
+      "possible": 12.0,
+      "pct": 100.0,
+      "grade": "A",
+      "counts": {
+        "pass": 4,
+        "fair": 0,
+        "weak": 0,
+        "fail": 0
+      },
+      "n_checks": 4
+    },
+    "AC / pack / driveline": {
+      "earned": 21.0,
+      "possible": 21.0,
+      "pct": 100.0,
+      "grade": "A",
+      "counts": {
+        "pass": 7,
+        "fair": 0,
+        "weak": 0,
+        "fail": 0
+      },
+      "n_checks": 7
+    },
+    "Usage / regen / sleep": {
+      "earned": 8.0,
+      "possible": 12.0,
+      "pct": 66.7,
+      "grade": "D",
+      "counts": {
+        "pass": 2,
+        "fair": 0,
+        "weak": 2,
+        "fail": 0
+      },
+      "n_checks": 4
+    }
+  },
+  "checks": {
+    "UDDS Wh/mi vs EPA Vehicle DC": {
+      "sim": 167.32,
+      "ref": 169.39,
+      "error_pct": -1.22,
+      "points": 3,
+      "max": 3,
+      "weight": 2,
+      "band": "pass"
+    },
+    "HWFET Wh/mi vs EPA Vehicle DC": {
+      "sim": 190.3,
+      "ref": 180.59,
+      "error_pct": 5.38,
+      "points": 3,
+      "max": 3,
+      "weight": 2,
+      "band": "pass"
+    },
+    "2-cycle combined vs EPA": {
+      "sim": 177.661,
+      "ref": 174.43,
+      "error_pct": 1.85,
+      "points": 3,
+      "max": 3,
+      "weight": 2,
+      "band": "pass"
+    },
+    "UDDS Wh/mi vs FASTSim M3 RWD": {
+      "sim": 167.32,
+      "ref": 146.68,
+      "error_pct": 14.07,
+      "points": 2,
+      "max": 3,
+      "weight": 1,
+      "band": "fair"
+    },
+    "HWFET Wh/mi vs FASTSim M3 RWD": {
+      "sim": 190.3,
+      "ref": 157.47,
+      "error_pct": 20.85,
+      "points": 1,
+      "max": 3,
+      "weight": 1,
+      "band": "weak"
+    },
+    "US06 Wh/mi vs FASTSim M3 RWD": {
+      "sim": 243.23,
+      "ref": 214.53,
+      "error_pct": 13.38,
+      "points": 2,
+      "max": 3,
+      "weight": 1,
+      "band": "fair"
+    },
+    "UDDS speed RMSE": {
+      "sim": 0.346,
+      "ref": 1.5,
+      "error_pct": null,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "HWFET speed RMSE": {
+      "sim": 0.166,
+      "ref": 1.5,
+      "error_pct": null,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "US06 speed RMSE": {
+      "sim": 0.728,
+      "ref": 1.5,
+      "error_pct": null,
+      "points": 2,
+      "max": 3,
+      "weight": 1,
+      "band": "fair"
+    },
+    "Road load 20 mph vs EPA ABC": {
+      "sim": 236.3858,
+      "ref": 201.629,
+      "error_pct": 17.24,
+      "points": 2,
+      "max": 3,
+      "weight": 1,
+      "band": "fair"
+    },
+    "Road load 50 mph vs EPA ABC": {
+      "sim": 364.9571,
+      "ref": 346.0049,
+      "error_pct": 5.48,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "Road load 70 mph vs EPA ABC": {
+      "sim": 511.8958,
+      "ref": 509.0678,
+      "error_pct": 0.56,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "DC 10\u219250 kWh minutes vs ABRP": {
+      "sim": 22.71,
+      "ref": 23.0,
+      "error_pct": -1.26,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "DC power at 20% SOC": {
+      "sim": 149.68,
+      "ref": 155.0,
+      "lo": 140.0,
+      "hi": 170.0,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "DC power at 50% SOC": {
+      "sim": 91.35,
+      "ref": 90.0,
+      "lo": 70.0,
+      "hi": 110.0,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "DC power at 80% SOC": {
+      "sim": 50.4,
+      "ref": 42.5,
+      "lo": 30.0,
+      "hi": 55.0,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "AC into pack vs line\u00d7OBC": {
+      "sim": 6452.0511,
+      "ref": 6624.0,
+      "error_pct": -2.6,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "Motor rpm at 100 kph vs Model 3 18\"": {
+      "sim": 6820.9261,
+      "ref": 7042.2541,
+      "error_pct": -3.14,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "OCV at 50% vs nominal": {
+      "sim": 350.0,
+      "ref": 350,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "OCV at 20% vs NMC 3.55 V/cell": {
+      "sim": 335.8108,
+      "ref": 335.8108,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "OCV at 80% vs NMC 3.95 V/cell": {
+      "sim": 373.6486,
+      "ref": 373.6486,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "Pack R at 25 \u00b0C vs 35\u201390 m\u03a9": {
+      "sim": 0.07,
+      "ref": 0.0625,
+      "lo": 0.035,
+      "hi": 0.09,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "200 A instantaneous sag": {
+      "sim": 9.8,
+      "ref": 10.0,
+      "lo": 5.0,
+      "hi": 15.0,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "Rated Wh/km vs fleet p50": {
+      "sim": 150.0,
+      "ref": 155.0,
+      "error_pct": -3.23,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "HWFET Wh/km vs fleet p50": {
+      "sim": 118.25,
+      "ref": 155.0,
+      "error_pct": -23.71,
+      "points": 1,
+      "max": 3,
+      "weight": 1,
+      "band": "weak"
+    },
+    "Sleep load vs 10\u201350 W": {
+      "sim": 15.0,
+      "ref": 30.0,
+      "lo": 10.0,
+      "hi": 50.0,
+      "error_pct": 0.0,
+      "points": 3,
+      "max": 3,
+      "weight": 1,
+      "band": "pass"
+    },
+    "One-pedal regen vs ~0.2 g": {
+      "sim": 1.2,
+      "ref": 1.96,
+      "error_pct": -38.78,
+      "points": 1,
+      "max": 3,
+      "weight": 1,
+      "band": "weak"
+    }
+  },
+  "cycles": {
+    "udds": {
+      "plant": {
+        "duration_s": 1369.0,
+        "distance_km": 12.0,
+        "distance_mi": 7.4564,
+        "net_kwh": 1.2476,
+        "wh_per_mi": 167.32,
+        "wh_per_km": 103.97,
+        "traction_kwh": 1.12624,
+        "soc_end_pct": 78.414,
+        "speed_rmse_mph": 0.346,
+        "mean_speed_kph": 31.56
+      },
+      "fastsim": {
+        "vehicle": "2022 Tesla Model 3 RWD thrml",
+        "chemical_kwh": 1.12932,
+        "electrical_kwh": 1.09285,
+        "wh_per_mi": 146.68,
+        "wh_per_km": 91.14,
+        "distance_mi": 7.4505,
+        "mass_kg": 1752.0
+      },
+      "epa_wh_per_mi": 169.39
+    },
+    "hwfet": {
+      "plant": {
+        "duration_s": 765.0,
+        "distance_km": 16.5069,
+        "distance_mi": 10.2569,
+        "net_kwh": 1.95192,
+        "wh_per_mi": 190.3,
+        "wh_per_km": 118.25,
+        "traction_kwh": 1.8841,
+        "soc_end_pct": 77.534,
+        "speed_rmse_mph": 0.166,
+        "mean_speed_kph": 77.68
+      },
+      "fastsim": {
+        "vehicle": "2022 Tesla Model 3 RWD thrml",
+        "chemical_kwh": 1.64663,
+        "electrical_kwh": 1.61515,
+        "wh_per_mi": 157.47,
+        "wh_per_km": 97.85,
+        "distance_mi": 10.2569,
+        "mass_kg": 1752.0
+      },
+      "epa_wh_per_mi": 180.59
+    },
+    "us06": {
+      "plant": {
+        "duration_s": 600.0,
+        "distance_km": 12.8761,
+        "distance_mi": 8.0008,
+        "net_kwh": 1.94603,
+        "wh_per_mi": 243.23,
+        "wh_per_km": 151.14,
+        "traction_kwh": 1.89176,
+        "soc_end_pct": 77.501,
+        "speed_rmse_mph": 0.728,
+        "mean_speed_kph": 77.26
+      },
+      "fastsim": {
+        "vehicle": "2022 Tesla Model 3 RWD thrml",
+        "chemical_kwh": 1.76707,
+        "electrical_kwh": 1.71794,
+        "wh_per_mi": 214.53,
+        "wh_per_km": 133.3,
+        "distance_mi": 8.008,
+        "mass_kg": 1752.0
+      },
+      "epa_wh_per_mi": null
+    }
+  },
+  "combined_wh_per_mi": 177.66,
+  "epa_combined_wh_per_mi": 174.43,
+  "road_load": {
+    "20": {
+      "ours_n": 236.386,
+      "epa_n": 201.629,
+      "ours_hp": 2.834,
+      "epa_hp": 2.417
+    },
+    "50": {
+      "ours_n": 364.957,
+      "epa_n": 346.005,
+      "ours_hp": 10.939,
+      "epa_hp": 10.371
+    },
+    "70": {
+      "ours_n": 511.896,
+      "epa_n": 509.068,
+      "ours_hp": 21.481,
+      "epa_hp": 21.363
+    },
+    "80": {
+      "ours_n": 603.732,
+      "epa_n": 610.643,
+      "ours_hp": 28.955,
+      "epa_hp": 29.286
+    }
+  },
+  "dc": {
+    "minutes": 22.71,
+    "start_soc_pct": 13.33,
+    "end_soc_pct": 66.67,
+    "energy_added_kwh": 41.98,
+    "curve_end_soc_pct": 90.0,
+    "samples_kw": {
+      "20": 149.68,
+      "50": 91.35,
+      "80": 50.4
+    },
+    "peak_kw": 149.68,
+    "curve_n": 81,
+    "curve": [
+      {
+        "t_s": 0.1,
+        "soc_pct": 10.01,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 347.5,
+        "pack_a": -430.8
+      },
+      {
+        "t_s": 18.3,
+        "soc_pct": 11.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 352.0,
+        "pack_a": -425.3
+      },
+      {
+        "t_s": 36.7,
+        "soc_pct": 12.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 354.6,
+        "pack_a": -422.1
+      },
+      {
+        "t_s": 55.2,
+        "soc_pct": 13.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 356.3,
+        "pack_a": -420.1
+      },
+      {
+        "t_s": 73.7,
+        "soc_pct": 14.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 357.4,
+        "pack_a": -418.8
+      },
+      {
+        "t_s": 92.4,
+        "soc_pct": 15.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 358.2,
+        "pack_a": -417.8
+      },
+      {
+        "t_s": 111.0,
+        "soc_pct": 16.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 358.9,
+        "pack_a": -417.0
+      },
+      {
+        "t_s": 129.7,
+        "soc_pct": 17.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 359.5,
+        "pack_a": -416.3
+      },
+      {
+        "t_s": 148.5,
+        "soc_pct": 18.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 360.1,
+        "pack_a": -415.6
+      },
+      {
+        "t_s": 167.2,
+        "soc_pct": 19.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 360.7,
+        "pack_a": -415.0
+      },
+      {
+        "t_s": 186.0,
+        "soc_pct": 20.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 361.3,
+        "pack_a": -414.3
+      },
+      {
+        "t_s": 204.8,
+        "soc_pct": 21.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 361.4,
+        "pack_a": -414.2
+      },
+      {
+        "t_s": 223.7,
+        "soc_pct": 22.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 361.5,
+        "pack_a": -414.0
+      },
+      {
+        "t_s": 242.5,
+        "soc_pct": 23.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 361.7,
+        "pack_a": -413.9
+      },
+      {
+        "t_s": 261.3,
+        "soc_pct": 24.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 361.8,
+        "pack_a": -413.7
+      },
+      {
+        "t_s": 280.2,
+        "soc_pct": 25.01,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 362.0,
+        "pack_a": -413.5
+      },
+      {
+        "t_s": 299.0,
+        "soc_pct": 26.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 362.1,
+        "pack_a": -413.3
+      },
+      {
+        "t_s": 317.9,
+        "soc_pct": 27.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 362.3,
+        "pack_a": -413.1
+      },
+      {
+        "t_s": 336.7,
+        "soc_pct": 28.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 362.5,
+        "pack_a": -412.9
+      },
+      {
+        "t_s": 355.6,
+        "soc_pct": 29.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 362.7,
+        "pack_a": -412.7
+      },
+      {
+        "t_s": 374.5,
+        "soc_pct": 30.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 362.9,
+        "pack_a": -412.5
+      },
+      {
+        "t_s": 393.4,
+        "soc_pct": 31.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 363.1,
+        "pack_a": -412.2
+      },
+      {
+        "t_s": 412.3,
+        "soc_pct": 32.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 363.3,
+        "pack_a": -412.0
+      },
+      {
+        "t_s": 431.2,
+        "soc_pct": 33.0,
+        "power_kw": 149.68,
+        "station_kw": 150.0,
+        "pack_v": 363.5,
+        "pack_a": -411.7
+      },
+      {
+        "t_s": 450.3,
+        "soc_pct": 34.0,
+        "power_kw": 146.89,
+        "station_kw": 150.0,
+        "pack_v": 363.5,
+        "pack_a": -404.1
+      },
+      {
+        "t_s": 469.8,
+        "soc_pct": 35.0,
+        "power_kw": 142.93,
+        "station_kw": 150.0,
+        "pack_v": 363.3,
+        "pack_a": -393.5
+      },
+      {
+        "t_s": 489.9,
+        "soc_pct": 36.0,
+        "power_kw": 138.95,
+        "station_kw": 150.0,
+        "pack_v": 363.0,
+        "pack_a": -382.8
+      },
+      {
+        "t_s": 510.5,
+        "soc_pct": 37.0,
+        "power_kw": 134.99,
+        "station_kw": 150.0,
+        "pack_v": 362.8,
+        "pack_a": -372.1
+      },
+      {
+        "t_s": 531.8,
+        "soc_pct": 38.0,
+        "power_kw": 131.02,
+        "station_kw": 150.0,
+        "pack_v": 362.5,
+        "pack_a": -361.4
+      },
+      {
+        "t_s": 553.7,
+        "soc_pct": 39.0,
+        "power_kw": 127.06,
+        "station_kw": 150.0,
+        "pack_v": 362.3,
+        "pack_a": -350.7
+      },
+      {
+        "t_s": 576.2,
+        "soc_pct": 40.0,
+        "power_kw": 123.13,
+        "station_kw": 150.0,
+        "pack_v": 362.1,
+        "pack_a": -340.0
+      },
+      {
+        "t_s": 599.5,
+        "soc_pct": 41.0,
+        "power_kw": 119.91,
+        "station_kw": 150.0,
+        "pack_v": 362.0,
+        "pack_a": -331.3
+      },
+      {
+        "t_s": 623.3,
+        "soc_pct": 42.0,
+        "power_kw": 116.72,
+        "station_kw": 150.0,
+        "pack_v": 361.9,
+        "pack_a": -322.5
+      },
+      {
+        "t_s": 647.8,
+        "soc_pct": 43.0,
+        "power_kw": 113.54,
+        "station_kw": 150.0,
+        "pack_v": 361.8,
+        "pack_a": -313.8
+      },
+      {
+        "t_s": 673.0,
+        "soc_pct": 44.0,
+        "power_kw": 110.35,
+        "station_kw": 150.0,
+        "pack_v": 361.8,
+        "pack_a": -305.0
+      },
+      {
+        "t_s": 698.9,
+        "soc_pct": 45.0,
+        "power_kw": 107.18,
+        "station_kw": 150.0,
+        "pack_v": 361.7,
+        "pack_a": -296.3
+      },
+      {
+        "t_s": 725.6,
+        "soc_pct": 46.0,
+        "power_kw": 104.0,
+        "station_kw": 150.0,
+        "pack_v": 361.7,
+        "pack_a": -287.6
+      },
+      {
+        "t_s": 753.1,
+        "soc_pct": 47.0,
+        "power_kw": 100.84,
+        "station_kw": 150.0,
+        "pack_v": 361.7,
+        "pack_a": -278.8
+      },
+      {
+        "t_s": 781.5,
+        "soc_pct": 48.0,
+        "power_kw": 97.67,
+        "station_kw": 150.0,
+        "pack_v": 361.6,
+        "pack_a": -270.1
+      },
+      {
+        "t_s": 810.8,
+        "soc_pct": 49.0,
+        "power_kw": 94.51,
+        "station_kw": 150.0,
+        "pack_v": 361.6,
+        "pack_a": -261.3
+      },
+      {
+        "t_s": 841.1,
+        "soc_pct": 50.0,
+        "power_kw": 91.35,
+        "station_kw": 150.0,
+        "pack_v": 361.6,
+        "pack_a": -252.6
+      },
+      {
+        "t_s": 872.2,
+        "soc_pct": 51.0,
+        "power_kw": 90.24,
+        "station_kw": 150.0,
+        "pack_v": 362.2,
+        "pack_a": -249.2
+      },
+      {
+        "t_s": 903.7,
+        "soc_pct": 52.0,
+        "power_kw": 89.15,
+        "station_kw": 150.0,
+        "pack_v": 362.7,
+        "pack_a": -245.8
+      },
+      {
+        "t_s": 935.6,
+        "soc_pct": 53.0,
+        "power_kw": 88.06,
+        "station_kw": 150.0,
+        "pack_v": 363.3,
+        "pack_a": -242.4
+      },
+      {
+        "t_s": 968.0,
+        "soc_pct": 54.0,
+        "power_kw": 86.96,
+        "station_kw": 150.0,
+        "pack_v": 363.9,
+        "pack_a": -239.0
+      },
+      {
+        "t_s": 1000.8,
+        "soc_pct": 55.0,
+        "power_kw": 85.86,
+        "station_kw": 150.0,
+        "pack_v": 364.5,
+        "pack_a": -235.6
+      },
+      {
+        "t_s": 1034.2,
+        "soc_pct": 56.0,
+        "power_kw": 84.75,
+        "station_kw": 150.0,
+        "pack_v": 365.1,
+        "pack_a": -232.2
+      },
+      {
+        "t_s": 1068.0,
+        "soc_pct": 57.0,
+        "power_kw": 83.65,
+        "station_kw": 150.0,
+        "pack_v": 365.6,
+        "pack_a": -228.8
+      },
+      {
+        "t_s": 1102.3,
+        "soc_pct": 58.0,
+        "power_kw": 82.54,
+        "station_kw": 150.0,
+        "pack_v": 366.2,
+        "pack_a": -225.4
+      },
+      {
+        "t_s": 1137.1,
+        "soc_pct": 59.0,
+        "power_kw": 81.43,
+        "station_kw": 150.0,
+        "pack_v": 366.8,
+        "pack_a": -222.0
+      },
+      {
+        "t_s": 1172.5,
+        "soc_pct": 60.0,
+        "power_kw": 80.31,
+        "station_kw": 150.0,
+        "pack_v": 367.4,
+        "pack_a": -218.6
+      },
+      {
+        "t_s": 1208.4,
+        "soc_pct": 61.0,
+        "power_kw": 79.19,
+        "station_kw": 150.0,
+        "pack_v": 368.0,
+        "pack_a": -215.2
+      },
+      {
+        "t_s": 1244.9,
+        "soc_pct": 62.0,
+        "power_kw": 78.07,
+        "station_kw": 150.0,
+        "pack_v": 368.6,
+        "pack_a": -211.8
+      },
+      {
+        "t_s": 1282.0,
+        "soc_pct": 63.0,
+        "power_kw": 76.94,
+        "station_kw": 150.0,
+        "pack_v": 369.2,
+        "pack_a": -208.4
+      },
+      {
+        "t_s": 1319.7,
+        "soc_pct": 64.0,
+        "power_kw": 75.81,
+        "station_kw": 150.0,
+        "pack_v": 369.9,
+        "pack_a": -205.0
+      },
+      {
+        "t_s": 1358.1,
+        "soc_pct": 65.0,
+        "power_kw": 74.67,
+        "station_kw": 150.0,
+        "pack_v": 370.5,
+        "pack_a": -201.6
+      },
+      {
+        "t_s": 1397.0,
+        "soc_pct": 66.0,
+        "power_kw": 73.54,
+        "station_kw": 150.0,
+        "pack_v": 371.1,
+        "pack_a": -198.2
+      },
+      {
+        "t_s": 1436.7,
+        "soc_pct": 67.0,
+        "power_kw": 72.4,
+        "station_kw": 150.0,
+        "pack_v": 371.7,
+        "pack_a": -194.8
+      },
+      {
+        "t_s": 1477.1,
+        "soc_pct": 68.0,
+        "power_kw": 71.25,
+        "station_kw": 150.0,
+        "pack_v": 372.3,
+        "pack_a": -191.4
+      },
+      {
+        "t_s": 1518.1,
+        "soc_pct": 69.0,
+        "power_kw": 70.1,
+        "station_kw": 150.0,
+        "pack_v": 372.9,
+        "pack_a": -188.0
+      },
+      {
+        "t_s": 1560.0,
+        "soc_pct": 70.0,
+        "power_kw": 68.95,
+        "station_kw": 150.0,
+        "pack_v": 373.5,
+        "pack_a": -184.6
+      },
+      {
+        "t_s": 1602.8,
+        "soc_pct": 71.0,
+        "power_kw": 67.23,
+        "station_kw": 150.0,
+        "pack_v": 374.1,
+        "pack_a": -179.7
+      },
+      {
+        "t_s": 1646.7,
+        "soc_pct": 72.0,
+        "power_kw": 65.52,
+        "station_kw": 150.0,
+        "pack_v": 374.7,
+        "pack_a": -174.9
+      },
+      {
+        "t_s": 1691.9,
+        "soc_pct": 73.0,
+        "power_kw": 63.79,
+        "station_kw": 150.0,
+        "pack_v": 375.2,
+        "pack_a": -170.0
+      },
+      {
+        "t_s": 1738.4,
+        "soc_pct": 74.0,
+        "power_kw": 62.07,
+        "station_kw": 150.0,
+        "pack_v": 375.8,
+        "pack_a": -165.1
+      },
+      {
+        "t_s": 1786.3,
+        "soc_pct": 75.0,
+        "power_kw": 60.33,
+        "station_kw": 150.0,
+        "pack_v": 376.4,
+        "pack_a": -160.3
+      },
+      {
+        "t_s": 1835.7,
+        "soc_pct": 76.0,
+        "power_kw": 58.51,
+        "station_kw": 150.0,
+        "pack_v": 376.9,
+        "pack_a": -155.2
+      },
+      {
+        "t_s": 1886.8,
+        "soc_pct": 77.0,
+        "power_kw": 56.43,
+        "station_kw": 150.0,
+        "pack_v": 377.5,
+        "pack_a": -149.5
+      },
+      {
+        "t_s": 1940.0,
+        "soc_pct": 78.0,
+        "power_kw": 54.38,
+        "station_kw": 150.0,
+        "pack_v": 378.0,
+        "pack_a": -143.8
+      },
+      {
+        "t_s": 1995.2,
+        "soc_pct": 79.0,
+        "power_kw": 52.37,
+        "station_kw": 150.0,
+        "pack_v": 378.6,
+        "pack_a": -138.3
+      },
+      {
+        "t_s": 2052.7,
+        "soc_pct": 80.0,
+        "power_kw": 50.4,
+        "station_kw": 150.0,
+        "pack_v": 379.1,
+        "pack_a": -132.9
+      },
+      {
+        "t_s": 2112.5,
+        "soc_pct": 81.0,
+        "power_kw": 48.55,
+        "station_kw": 150.0,
+        "pack_v": 380.3,
+        "pack_a": -127.6
+      },
+      {
+        "t_s": 2174.8,
+        "soc_pct": 82.0,
+        "power_kw": 46.72,
+        "station_kw": 150.0,
+        "pack_v": 381.5,
+        "pack_a": -122.4
+      },
+      {
+        "t_s": 2239.8,
+        "soc_pct": 83.0,
+        "power_kw": 44.91,
+        "station_kw": 150.0,
+        "pack_v": 382.7,
+        "pack_a": -117.3
+      },
+      {
+        "t_s": 2307.7,
+        "soc_pct": 84.0,
+        "power_kw": 43.12,
+        "station_kw": 150.0,
+        "pack_v": 383.9,
+        "pack_a": -112.3
+      },
+      {
+        "t_s": 2378.6,
+        "soc_pct": 85.0,
+        "power_kw": 41.36,
+        "station_kw": 150.0,
+        "pack_v": 385.1,
+        "pack_a": -107.4
+      },
+      {
+        "t_s": 2452.9,
+        "soc_pct": 86.0,
+        "power_kw": 39.6,
+        "station_kw": 150.0,
+        "pack_v": 386.4,
+        "pack_a": -102.5
+      },
+      {
+        "t_s": 2530.8,
+        "soc_pct": 87.0,
+        "power_kw": 37.87,
+        "station_kw": 150.0,
+        "pack_v": 387.6,
+        "pack_a": -97.7
+      },
+      {
+        "t_s": 2612.5,
+        "soc_pct": 88.0,
+        "power_kw": 36.14,
+        "station_kw": 150.0,
+        "pack_v": 388.8,
+        "pack_a": -93.0
+      },
+      {
+        "t_s": 2698.6,
+        "soc_pct": 89.0,
+        "power_kw": 34.43,
+        "station_kw": 150.0,
+        "pack_v": 390.0,
+        "pack_a": -88.3
+      },
+      {
+        "t_s": 2789.2,
+        "soc_pct": 90.0,
+        "power_kw": 32.72,
+        "station_kw": 150.0,
+        "pack_v": 391.3,
+        "pack_a": -83.6
+      }
+    ]
+  },
+  "ac_into_pack_w": 6452.1,
+  "ac_ref_w": 6624.0,
+  "rpm": {
+    "ours": 6820.9,
+    "tesla_18in": 7042.3
+  },
+  "ocv": {
+    "20": 335.81,
+    "50": 350.0,
+    "80": 373.65,
+    "100": 395.41
+  },
+  "hotel_w": 319.1,
+  "card": {
+    "path": "lab/vehicle-simulator/examples/ev_card.json",
+    "pack_kwh": 75,
+    "mass_kg": 1800,
+    "cd": 0.23,
+    "frontal_area_m2": 2.22,
+    "rolling_coeff": 0.012,
+    "gear_ratio": 9.0,
+    "wheel_radius_m": 0.35,
+    "fast_charge_power_kw": 150
+  },
+  "fastsim_meta": {
+    "version": "3.1.0",
+    "vehicle": "2022 Tesla Model 3 RWD thrml.yaml"
+  },
+  "method": {
+    "dt_s": 0.1,
+    "hvac": "off",
+    "grade": 0,
+    "ambient_c": 25.0,
+    "start_soc_pct": 80.0,
+    "epa_vehicle": "2020 Tesla Model 3 Long Range AWD, 18 in, Vehicle DC"
+  }
+}

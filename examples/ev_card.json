@@ -1,0 +1,11 @@
+{
+  "pack_kwh": 75,
+  "mass_kg": 1800,
+  "charge_power_kw": 7.2,
+  "fast_charge_power_kw": 150,
+  "nominal_voltage_v": 350,
+  "home_lat": 12.90873,
+  "home_lon": 77.609752,
+  "cruise_speed_kph": 60,
+  "max_speed_kph": 130
+}

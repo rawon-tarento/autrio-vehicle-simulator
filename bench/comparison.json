@@ -1,0 +1,965 @@
+{
+  "ours_score": {
+    "earned": 80.0,
+    "possible": 90.0,
+    "pct": 88.9,
+    "grade": "B",
+    "counts": {
+      "pass": 20,
+      "fair": 4,
+      "weak": 3,
+      "fail": 0
+    },
+    "n_checks": 27
+  },
+  "shipped": {
+    "label": "autrio-car-sim shipped",
+    "score": {
+      "earned": 50.0,
+      "possible": 90.0,
+      "pct": 55.6,
+      "grade": "F",
+      "counts": {
+        "pass": 11,
+        "fair": 1,
+        "weak": 9,
+        "fail": 6
+      },
+      "n_checks": 27
+    },
+    "checks": {
+      "UDDS Wh/mi vs EPA Vehicle DC": {
+        "sim": 205.19,
+        "ref": 169.39,
+        "error_pct": 21.13,
+        "points": 1,
+        "max": 3,
+        "weight": 2,
+        "band": "weak"
+      },
+      "HWFET Wh/mi vs EPA Vehicle DC": {
+        "sim": 193.23,
+        "ref": 180.59,
+        "error_pct": 7.0,
+        "points": 3,
+        "max": 3,
+        "weight": 2,
+        "band": "pass"
+      },
+      "2-cycle combined vs EPA": {
+        "sim": 199.808,
+        "ref": 174.43,
+        "error_pct": 14.55,
+        "points": 2,
+        "max": 3,
+        "weight": 2,
+        "band": "fair"
+      },
+      "UDDS Wh/mi vs FASTSim M3 RWD": {
+        "sim": 205.19,
+        "ref": 146.68,
+        "error_pct": 39.89,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "HWFET Wh/mi vs FASTSim M3 RWD": {
+        "sim": 193.23,
+        "ref": 157.47,
+        "error_pct": 22.71,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "US06 Wh/mi vs FASTSim M3 RWD": {
+        "sim": 284.33,
+        "ref": 214.53,
+        "error_pct": 32.54,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "UDDS speed RMSE": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "open-loop prescribed speed; no closed-loop driver"
+      },
+      "HWFET speed RMSE": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "open-loop prescribed speed; no closed-loop driver"
+      },
+      "US06 speed RMSE": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "open-loop prescribed speed; no closed-loop driver"
+      },
+      "Road load 20 mph vs EPA ABC": {
+        "sim": 248.1578,
+        "ref": 201.629,
+        "error_pct": 23.08,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "Road load 50 mph vs EPA ABC": {
+        "sim": 376.7291,
+        "ref": 346.0049,
+        "error_pct": 8.88,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Road load 70 mph vs EPA ABC": {
+        "sim": 523.6678,
+        "ref": 509.0678,
+        "error_pct": 2.87,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "DC 10\u219250 kWh minutes vs ABRP": {
+        "sim": 17.58,
+        "ref": 23.0,
+        "error_pct": -23.57,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "DC power at 20% SOC": {
+        "sim": 149.7,
+        "ref": 155.0,
+        "lo": 140.0,
+        "hi": 170.0,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "DC power at 50% SOC": {
+        "sim": 149.7,
+        "ref": 110.0,
+        "error_pct": 36.09,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak",
+        "lo": 70.0,
+        "hi": 110.0
+      },
+      "DC power at 80% SOC": {
+        "sim": 72.8,
+        "ref": 55.0,
+        "error_pct": 32.36,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak",
+        "lo": 30.0,
+        "hi": 55.0
+      },
+      "AC into pack vs line\u00d7OBC": {
+        "sim": 6324.0,
+        "ref": 6624.0,
+        "error_pct": -4.53,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Motor rpm at 100 kph vs Model 3 18\"": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "no gear_ratio / wheel_radius on their card"
+      },
+      "OCV at 50% vs nominal": {
+        "sim": 355.2,
+        "ref": 355.2,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "OCV at 20% vs NMC 3.55 V/cell": {
+        "sim": 340.8,
+        "ref": 340.8,
+        "error_pct": -0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "OCV at 80% vs NMC 3.95 V/cell": {
+        "sim": 379.2,
+        "ref": 379.2,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Pack R at 25 \u00b0C vs 35\u201390 m\u03a9": {
+        "sim": 0.07,
+        "ref": 0.0625,
+        "lo": 0.035,
+        "hi": 0.09,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "200 A instantaneous sag": {
+        "sim": 14.0,
+        "ref": 10.0,
+        "lo": 5.0,
+        "hi": 15.0,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Rated Wh/km vs fleet p50": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "no rated_wh_per_km on their card"
+      },
+      "HWFET Wh/km vs fleet p50": {
+        "sim": 120.07,
+        "ref": 155.0,
+        "error_pct": -22.54,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "Sleep load vs 10\u201350 W": {
+        "sim": 15,
+        "ref": 30.0,
+        "lo": 10.0,
+        "hi": 50.0,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "One-pedal regen vs ~0.2 g": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "no lift-off deceleration; regen is a power cap"
+      }
+    },
+    "cycles": {
+      "udds": {
+        "plant": {
+          "duration_s": 1369.0,
+          "distance_km": 11.9904,
+          "distance_mi": 7.4505,
+          "net_kwh": 1.52879,
+          "wh_per_mi": 205.19,
+          "wh_per_km": 127.5,
+          "soc_end_pct": 78.136,
+          "speed_rmse_mph": 0.0,
+          "dt_s": 1.0,
+          "motion": "prescribed"
+        },
+        "fastsim": {
+          "vehicle": "2022 Tesla Model 3 RWD thrml",
+          "chemical_kwh": 1.12932,
+          "electrical_kwh": 1.09285,
+          "wh_per_mi": 146.68,
+          "wh_per_km": 91.14,
+          "distance_mi": 7.4505,
+          "mass_kg": 1752.0
+        },
+        "epa_wh_per_mi": 169.39
+      },
+      "hwfet": {
+        "plant": {
+          "duration_s": 765.0,
+          "distance_km": 16.5068,
+          "distance_mi": 10.2569,
+          "net_kwh": 1.98192,
+          "wh_per_mi": 193.23,
+          "wh_per_km": 120.07,
+          "soc_end_pct": 77.583,
+          "speed_rmse_mph": 0.0,
+          "dt_s": 1.0,
+          "motion": "prescribed"
+        },
+        "fastsim": {
+          "vehicle": "2022 Tesla Model 3 RWD thrml",
+          "chemical_kwh": 1.64663,
+          "electrical_kwh": 1.61515,
+          "wh_per_mi": 157.47,
+          "wh_per_km": 97.85,
+          "distance_mi": 10.2569,
+          "mass_kg": 1752.0
+        },
+        "epa_wh_per_mi": 180.59
+      },
+      "us06": {
+        "plant": {
+          "duration_s": 600.0,
+          "distance_km": 12.8876,
+          "distance_mi": 8.008,
+          "net_kwh": 2.27687,
+          "wh_per_mi": 284.33,
+          "wh_per_km": 176.67,
+          "soc_end_pct": 77.223,
+          "speed_rmse_mph": 0.0,
+          "dt_s": 1.0,
+          "motion": "prescribed"
+        },
+        "fastsim": {
+          "vehicle": "2022 Tesla Model 3 RWD thrml",
+          "chemical_kwh": 1.76707,
+          "electrical_kwh": 1.71794,
+          "wh_per_mi": 214.53,
+          "wh_per_km": 133.3,
+          "distance_mi": 8.008,
+          "mass_kg": 1752.0
+        },
+        "epa_wh_per_mi": null
+      }
+    },
+    "combined_wh_per_mi": 199.81,
+    "epa_combined_wh_per_mi": 174.43,
+    "road_load": {
+      "20": {
+        "ours_n": 248.158,
+        "epa_n": 201.629
+      },
+      "50": {
+        "ours_n": 376.729,
+        "epa_n": 346.005
+      },
+      "70": {
+        "ours_n": 523.668,
+        "epa_n": 509.068
+      }
+    },
+    "dc": {
+      "minutes": 17.58,
+      "samples_kw": {
+        "20": 149.7,
+        "50": 149.7,
+        "80": 72.8
+      },
+      "peak_kw": 149.7,
+      "pack_kwh": 82.0,
+      "curve_n": 81
+    },
+    "ac_into_pack_w": 6324.0,
+    "ac_ref_w": 6624.0,
+    "ocv": {
+      "20": 340.8,
+      "50": 355.2,
+      "80": 379.2
+    },
+    "card": {
+      "mass_kg": 1900,
+      "pack_kwh": 82,
+      "cd": 0.23,
+      "crr": 0.012,
+      "frontal_area_m2": 2.22
+    }
+  },
+  "same_card": {
+    "label": "autrio-car-sim our card",
+    "score": {
+      "earned": 54.0,
+      "possible": 90.0,
+      "pct": 60.0,
+      "grade": "D",
+      "counts": {
+        "pass": 11,
+        "fair": 4,
+        "weak": 6,
+        "fail": 6
+      },
+      "n_checks": 27
+    },
+    "checks": {
+      "UDDS Wh/mi vs EPA Vehicle DC": {
+        "sim": 197.16,
+        "ref": 169.39,
+        "error_pct": 16.39,
+        "points": 2,
+        "max": 3,
+        "weight": 2,
+        "band": "fair"
+      },
+      "HWFET Wh/mi vs EPA Vehicle DC": {
+        "sim": 187.64,
+        "ref": 180.59,
+        "error_pct": 3.9,
+        "points": 3,
+        "max": 3,
+        "weight": 2,
+        "band": "pass"
+      },
+      "2-cycle combined vs EPA": {
+        "sim": 192.876,
+        "ref": 174.43,
+        "error_pct": 10.58,
+        "points": 2,
+        "max": 3,
+        "weight": 2,
+        "band": "fair"
+      },
+      "UDDS Wh/mi vs FASTSim M3 RWD": {
+        "sim": 197.16,
+        "ref": 146.68,
+        "error_pct": 34.42,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "HWFET Wh/mi vs FASTSim M3 RWD": {
+        "sim": 187.64,
+        "ref": 157.47,
+        "error_pct": 19.16,
+        "points": 2,
+        "max": 3,
+        "weight": 1,
+        "band": "fair"
+      },
+      "US06 Wh/mi vs FASTSim M3 RWD": {
+        "sim": 275.59,
+        "ref": 214.53,
+        "error_pct": 28.46,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "UDDS speed RMSE": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "open-loop prescribed speed; no closed-loop driver"
+      },
+      "HWFET speed RMSE": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "open-loop prescribed speed; no closed-loop driver"
+      },
+      "US06 speed RMSE": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "open-loop prescribed speed; no closed-loop driver"
+      },
+      "Road load 20 mph vs EPA ABC": {
+        "sim": 236.3858,
+        "ref": 201.629,
+        "error_pct": 17.24,
+        "points": 2,
+        "max": 3,
+        "weight": 1,
+        "band": "fair"
+      },
+      "Road load 50 mph vs EPA ABC": {
+        "sim": 364.9571,
+        "ref": 346.0049,
+        "error_pct": 5.48,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Road load 70 mph vs EPA ABC": {
+        "sim": 511.8958,
+        "ref": 509.0678,
+        "error_pct": 0.56,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "DC 10\u219250 kWh minutes vs ABRP": {
+        "sim": 17.9,
+        "ref": 23.0,
+        "error_pct": -22.17,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "DC power at 20% SOC": {
+        "sim": 149.7,
+        "ref": 155.0,
+        "lo": 140.0,
+        "hi": 170.0,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "DC power at 50% SOC": {
+        "sim": 149.7,
+        "ref": 110.0,
+        "error_pct": 36.09,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak",
+        "lo": 70.0,
+        "hi": 110.0
+      },
+      "DC power at 80% SOC": {
+        "sim": 73.26,
+        "ref": 55.0,
+        "error_pct": 33.2,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak",
+        "lo": 30.0,
+        "hi": 55.0
+      },
+      "AC into pack vs line\u00d7OBC": {
+        "sim": 6324.0,
+        "ref": 6624.0,
+        "error_pct": -4.53,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Motor rpm at 100 kph vs Model 3 18\"": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "no gear_ratio / wheel_radius on their card"
+      },
+      "OCV at 50% vs nominal": {
+        "sim": 355.2,
+        "ref": 355.2,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "OCV at 20% vs NMC 3.55 V/cell": {
+        "sim": 340.8,
+        "ref": 340.8,
+        "error_pct": -0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "OCV at 80% vs NMC 3.95 V/cell": {
+        "sim": 379.2,
+        "ref": 379.2,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Pack R at 25 \u00b0C vs 35\u201390 m\u03a9": {
+        "sim": 0.07,
+        "ref": 0.0625,
+        "lo": 0.035,
+        "hi": 0.09,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "200 A instantaneous sag": {
+        "sim": 14.0,
+        "ref": 10.0,
+        "lo": 5.0,
+        "hi": 15.0,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "Rated Wh/km vs fleet p50": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "no rated_wh_per_km on their card"
+      },
+      "HWFET Wh/km vs fleet p50": {
+        "sim": 116.6,
+        "ref": 155.0,
+        "error_pct": -24.77,
+        "points": 1,
+        "max": 3,
+        "weight": 1,
+        "band": "weak"
+      },
+      "Sleep load vs 10\u201350 W": {
+        "sim": 15,
+        "ref": 30.0,
+        "lo": 10.0,
+        "hi": 50.0,
+        "error_pct": 0.0,
+        "points": 3,
+        "max": 3,
+        "weight": 1,
+        "band": "pass"
+      },
+      "One-pedal regen vs ~0.2 g": {
+        "sim": null,
+        "ref": null,
+        "error_pct": null,
+        "points": 0,
+        "max": 3,
+        "weight": 1,
+        "band": "fail",
+        "missing": "no lift-off deceleration; regen is a power cap"
+      }
+    },
+    "cycles": {
+      "udds": {
+        "plant": {
+          "duration_s": 1369.0,
+          "distance_km": 11.9904,
+          "distance_mi": 7.4505,
+          "net_kwh": 1.46896,
+          "wh_per_mi": 197.16,
+          "wh_per_km": 122.51,
+          "soc_end_pct": 78.041,
+          "speed_rmse_mph": 0.0,
+          "dt_s": 1.0,
+          "motion": "prescribed"
+        },
+        "fastsim": {
+          "vehicle": "2022 Tesla Model 3 RWD thrml",
+          "chemical_kwh": 1.12932,
+          "electrical_kwh": 1.09285,
+          "wh_per_mi": 146.68,
+          "wh_per_km": 91.14,
+          "distance_mi": 7.4505,
+          "mass_kg": 1752.0
+        },
+        "epa_wh_per_mi": 169.39
+      },
+      "hwfet": {
+        "plant": {
+          "duration_s": 765.0,
+          "distance_km": 16.5068,
+          "distance_mi": 10.2569,
+          "net_kwh": 1.92463,
+          "wh_per_mi": 187.64,
+          "wh_per_km": 116.6,
+          "soc_end_pct": 77.434,
+          "speed_rmse_mph": 0.0,
+          "dt_s": 1.0,
+          "motion": "prescribed"
+        },
+        "fastsim": {
+          "vehicle": "2022 Tesla Model 3 RWD thrml",
+          "chemical_kwh": 1.64663,
+          "electrical_kwh": 1.61515,
+          "wh_per_mi": 157.47,
+          "wh_per_km": 97.85,
+          "distance_mi": 10.2569,
+          "mass_kg": 1752.0
+        },
+        "epa_wh_per_mi": 180.59
+      },
+      "us06": {
+        "plant": {
+          "duration_s": 600.0,
+          "distance_km": 12.8876,
+          "distance_mi": 8.008,
+          "net_kwh": 2.2069,
+          "wh_per_mi": 275.59,
+          "wh_per_km": 171.24,
+          "soc_end_pct": 77.057,
+          "speed_rmse_mph": 0.0,
+          "dt_s": 1.0,
+          "motion": "prescribed"
+        },
+        "fastsim": {
+          "vehicle": "2022 Tesla Model 3 RWD thrml",
+          "chemical_kwh": 1.76707,
+          "electrical_kwh": 1.71794,
+          "wh_per_mi": 214.53,
+          "wh_per_km": 133.3,
+          "distance_mi": 8.008,
+          "mass_kg": 1752.0
+        },
+        "epa_wh_per_mi": null
+      }
+    },
+    "combined_wh_per_mi": 192.88,
+    "epa_combined_wh_per_mi": 174.43,
+    "road_load": {
+      "20": {
+        "ours_n": 236.386,
+        "epa_n": 201.629
+      },
+      "50": {
+        "ours_n": 364.957,
+        "epa_n": 346.005
+      },
+      "70": {
+        "ours_n": 511.896,
+        "epa_n": 509.068
+      }
+    },
+    "dc": {
+      "minutes": 17.9,
+      "samples_kw": {
+        "20": 149.7,
+        "50": 149.7,
+        "80": 73.26
+      },
+      "peak_kw": 149.7,
+      "pack_kwh": 75.0,
+      "curve_n": 81
+    },
+    "ac_into_pack_w": 6324.0,
+    "ac_ref_w": 6624.0,
+    "ocv": {
+      "20": 340.8,
+      "50": 355.2,
+      "80": 379.2
+    },
+    "card": {
+      "mass_kg": 1800.0,
+      "pack_kwh": 75.0,
+      "cd": 0.23,
+      "crr": 0.012,
+      "frontal_area_m2": 2.22
+    }
+  },
+  "overlap": {
+    "n": 21,
+    "ours": {
+      "earned": 65.0,
+      "possible": 72.0,
+      "pct": 90.3,
+      "grade": "A",
+      "counts": {
+        "pass": 16,
+        "fair": 3,
+        "weak": 2,
+        "fail": 0
+      },
+      "n_checks": 21
+    },
+    "theirs": {
+      "earned": 50.0,
+      "possible": 72.0,
+      "pct": 69.4,
+      "grade": "D",
+      "counts": {
+        "pass": 11,
+        "fair": 1,
+        "weak": 9,
+        "fail": 0
+      },
+      "n_checks": 21
+    },
+    "wins": {
+      "ours": 8,
+      "theirs": 0,
+      "tie": 13
+    },
+    "deltas": [
+      {
+        "check": "UDDS Wh/mi vs EPA Vehicle DC",
+        "ours": 3,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "HWFET Wh/mi vs EPA Vehicle DC",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "2-cycle combined vs EPA",
+        "ours": 3,
+        "theirs": 2,
+        "winner": "ours"
+      },
+      {
+        "check": "UDDS Wh/mi vs FASTSim M3 RWD",
+        "ours": 2,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "HWFET Wh/mi vs FASTSim M3 RWD",
+        "ours": 1,
+        "theirs": 1,
+        "winner": "tie"
+      },
+      {
+        "check": "US06 Wh/mi vs FASTSim M3 RWD",
+        "ours": 2,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "Road load 20 mph vs EPA ABC",
+        "ours": 2,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "Road load 50 mph vs EPA ABC",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "Road load 70 mph vs EPA ABC",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "DC 10\u219250 kWh minutes vs ABRP",
+        "ours": 3,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "DC power at 20% SOC",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "DC power at 50% SOC",
+        "ours": 3,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "DC power at 80% SOC",
+        "ours": 3,
+        "theirs": 1,
+        "winner": "ours"
+      },
+      {
+        "check": "AC into pack vs line\u00d7OBC",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "OCV at 50% vs nominal",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "OCV at 20% vs NMC 3.55 V/cell",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "OCV at 80% vs NMC 3.95 V/cell",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "Pack R at 25 \u00b0C vs 35\u201390 m\u03a9",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "200 A instantaneous sag",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      },
+      {
+        "check": "HWFET Wh/km vs fleet p50",
+        "ours": 1,
+        "theirs": 1,
+        "winner": "tie"
+      },
+      {
+        "check": "Sleep load vs 10\u201350 W",
+        "ours": 3,
+        "theirs": 3,
+        "winner": "tie"
+      }
+    ]
+  }
+}
