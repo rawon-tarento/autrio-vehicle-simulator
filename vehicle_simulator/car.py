@@ -668,7 +668,7 @@ class Vehicle:
         st = self.sample
         pack = self.pack
         return {
-            "version": 2,
+            "version": 3,
             "soc_pct": pack.soc_pct,
             "odometer_km": st.odometer_km,
             "latitude_deg": st.latitude_deg,
@@ -678,6 +678,10 @@ class Vehicle:
             "pack_temp_c": pack.temp_c,
             "total_charge_kwh": pack.total_charge_kwh,
             "total_discharge_kwh": pack.total_discharge_kwh,
+            "sei_time_eq_s": pack.sei_time_eq_s,
+            "loss_cycle": pack.loss_cycle,
+            "loss_plate": pack.loss_plate,
+            "eq_full_cycles": pack.eq_full_cycles,
             "lv_soc_pct": self.lv.soc_pct,
             "asleep": self._power == ASLEEP,
             "occupied": self.occupied,
@@ -715,6 +719,11 @@ class Vehicle:
         pack.temp_c = float(data.get("pack_temp_c", self.env.ambient_c))
         pack.total_charge_kwh = float(data.get("total_charge_kwh", 0.0))
         pack.total_discharge_kwh = float(data.get("total_discharge_kwh", 0.0))
+        pack.sei_time_eq_s = float(data.get("sei_time_eq_s", 0.0))
+        pack.loss_cycle = float(data.get("loss_cycle", pack.loss_cycle))
+        pack.loss_plate = float(data.get("loss_plate", 0.0))
+        pack.eq_full_cycles = float(data.get("eq_full_cycles", 0.0))
+        pack._apply_soh()
         self.lv.soc_pct = float(data.get("lv_soc_pct", self.lv.soc_pct))
         st.odometer_km = float(data["odometer_km"])
         st.latitude_deg = float(data["latitude_deg"])
@@ -1196,7 +1205,7 @@ class Vehicle:
         power_kw = -self.pack.power_w / 1000.0
         if power_kw <= 0.05 or self._at_limit():
             return 0.0
-        need_kwh = (self.body.charge_limit_pct - self.pack.soc_pct) / 100.0 * self.card.nominal_full_pack_kwh * self.pack.soh
+        need_kwh = (self.body.charge_limit_pct - self.pack.soc_pct) / 100.0 * self.pack.full_kwh
         return need_kwh / power_kw
 
     def _status(self) -> dict[str, Any]:
@@ -1234,7 +1243,11 @@ class Vehicle:
             "battery.max_charge_a": limits.charge_a,
             "battery.total_charge_kwh": pack.total_charge_kwh,
             "battery.total_discharge_kwh": pack.total_discharge_kwh,
-            "battery.energy_to_limit_kwh": max(0.0, (body.charge_limit_pct - pack.soc_pct) / 100.0 * self.card.nominal_full_pack_kwh * pack.soh),
+            "battery.energy_to_limit_kwh": max(0.0, (body.charge_limit_pct - pack.soc_pct) / 100.0 * pack.full_kwh),
+            "battery.loss_sei_pct": 100.0 * pack.loss_sei,
+            "battery.loss_cycle_pct": 100.0 * pack.loss_cycle,
+            "battery.loss_plate_pct": 100.0 * pack.loss_plate,
+            "battery.eq_full_cycles": pack.eq_full_cycles,
             "thermal.battery_heater_kw": thermal.battery_heat_w / 1000.0,
             "thermal.battery_cooling_kw": thermal.battery_cool_w / 1000.0,
             "thermal.battery_precondition": int(body.battery_precondition),
@@ -1400,6 +1413,8 @@ class Vehicle:
         st.charge_profile = self.body.plug
         st.soc_pct = pack.soc_pct
         st.energy_remaining_kwh = pack.energy_kwh
+        st.nominal_full_pack_kwh = pack.full_kwh
+        st.beginning_of_life_kwh = pack._bol_kwh
         st.pack_voltage_v = self.sensors.pack_voltage(pack.voltage_v)
         st.pack_current_a = self.sensors.pack_current(pack.current_a)
         st.pack_power_kw = pack.power_w / 1000.0

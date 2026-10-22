@@ -132,8 +132,10 @@ SOC \leftarrow SOC - \frac{I\,dt}{3600\cdot Ah\cdot SOH}\cdot 100
 \]
 
 \[
-SOH = E_{full}/E_{BOL},\quad E_{rem} = E_{full}\cdot SOH\cdot SOC/100
+SOH = E_{full}/E_{BOL},\quad E_{rem} = E_{full}\cdot SOC/100
 \]
+
+\(E_{full}\) is pack state. It starts at \(E_{BOL}\) and falls as lithium inventory is lost (§3 aging).
 
 ### BMS limits
 
@@ -154,7 +156,48 @@ C_{th}\frac{dT}{dt} = Q_{gen} - k_{loss}(T-T_{amb}) - Q_{cool} + Q_{heat}
 
 Spread relaxes toward `spread_base + spread_k |I|` with time constant `spread_tau_s`. `battery.temp_max_c` / `temp_min_c` sit ±spread/2 around `battery.temp_c`.
 
-Contactors open (`asleep`): \(I=0\), \(V_{rc}\) decays, temperature drifts to ambient.
+Contactors open (`asleep`): \(I=0\), \(V_{rc}\) decays, temperature drifts to ambient. Calendar aging still runs.
+
+### Aging (NMC lithium inventory)
+
+Plant-level, not a Doyle–Fuller–Newman cell. Three losses share one SOH. They run every step, including asleep. `aging_accel` on the card scales wall time (`1` is real time; `8760` is one year per hour of sim). Floor is 55 %.
+
+**SEI / calendar.** Film growth is \(\sqrt{t}\). Equivalent time accumulates faster when the pack is hot and at high SOC:
+
+\[
+t_{sei} \leftarrow t_{sei} + a\,\exp\Bigl[\tfrac{E_{a}}{R}\bigl(\tfrac{1}{298.15}-\tfrac{1}{T}\bigr)\Bigr] e^{1.6(\mathrm{SOC}-0.5)}\,dt
+\]
+
+\[
+Q_{sei} = 0.02\sqrt{t_{sei}/(1\ \mathrm{year})}
+\]
+
+So one equivalent year at 25 °C, 50 % SOC costs 2 % capacity; four years cost 4 %. Sitting at 90 % is about \(1.9\times\) that. \(E_a = 50\) kJ/mol.
+
+**Cycle.** Discharge amp-hours, as equivalent full cycles against beginning-of-life Ah. High C-rate and high SOC cost more; heat uses the same Arrhenius as SEI:
+
+\[
+\mathrm{EFC} += a\,\frac{I_+ dt}{3600\,Ah},\quad
+Q_{cyc} += a\cdot 8\cdot10^{-5}\cdot\mathrm{EFC}\cdot(1+0.4\,C)(1+0.8\,\mathrm{SOC}^2)\,f_T
+\]
+
+\(I_+\) is discharge current only. 1000 easy EFC is about 8 % before stress.
+
+**Plating.** Charge current (negative \(I\)). The anode’s limit falls in the cold and toward 100 % SOC:
+
+\[
+I_{lim} = Ah\cdot 3C\cdot \exp\Bigl[\tfrac{70\,\mathrm{kJ/mol}}{R}\bigl(\tfrac{1}{298.15}-\tfrac{1}{T}\bigr)\Bigr]\max\bigl(0.02,\,1-\mathrm{SOC}^{2}\bigr)
+\]
+
+Excess over \(I_{lim}\) is lost at \(\eta=0.7\). A small extra tail uses the coldest brick, SOC above 70 %, and C-rate, so DC in the cold still plates a little even when the BMS is “safe.” AC at 25 °C does not.
+
+\[
+SOH = 1 - Q_{sei} - Q_{cyc} - Q_{plate}
+\]
+
+\(E_{full} = E_{BOL}\cdot SOH\). Resistance already grows as \(1+0.5(1-SOH)\). `battery.soh_pct`, `battery.nominal_full_pack_kwh`, `battery.loss_*_pct`, `battery.eq_full_cycles`.
+
+This is not cell-resolved plating or SEI thickness. It is the NMC use-and-time map: heat, high SOC, throughput, and cold/fast charge.
 
 ---
 
@@ -392,7 +435,8 @@ Signals the DBC does not map still exist. They still affect the signals it does 
 | `battery.ocv_v` | OCV curve |
 | `battery.hv_bus_voltage_v` | 0 / precharge / pack |
 | `battery.contactors_closed` | awake |
-| `battery.nominal_*`, `soh_pct`, energy remaining | card and SOC |
+| `battery.nominal_*`, `soh_pct`, energy remaining | \(E_{full}\), \(E_{BOL}\), SOC |
+| `battery.loss_sei_pct`, `loss_cycle_pct`, `loss_plate_pct`, `eq_full_cycles` | aging |
 | `battery.max_*` | BMS limits this step |
 | `battery.total_charge_kwh`, `total_discharge_kwh` | counters |
 | `battery.energy_to_limit_kwh` | energy from here to the charge limit |
@@ -548,7 +592,8 @@ Every symbol above is a field on `VehicleCard` (`vehicle_simulator/card.py`). De
 | Card field | Used for |
 |---|---|
 | `pack_kwh`, `nominal_voltage_v`, `capacity_ah` | Pack energy and Ah |
-| `nominal_full_pack_kwh`, `beginning_of_life_kwh` | SOH |
+| `nominal_full_pack_kwh`, `beginning_of_life_kwh` | starting \(E_{full}\) and \(E_{BOL}\) |
+| `aging_accel` | SOH time scale (`1` = real, `0` = freeze) |
 | `internal_resistance_ohm`, `r0_fraction`, `rc_tau_s`, `r_activation_k` | R0 + RC |
 | `cell_v_min`, `cell_v_max`, `max_discharge_a`, `dc_max_kw` | BMS limits |
 | `coulombic_eff_charge` | Charge Ah |

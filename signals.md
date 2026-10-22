@@ -57,10 +57,14 @@ Positive `battery.pack_current_a` is discharge. Negative is charge or regen.
 | `battery.ocv_v` | V | Open-circuit voltage |
 | `battery.hv_bus_voltage_v` | V | 0 asleep, ramps while waking, pack voltage awake |
 | `battery.contactors_closed` | 0 or 1 | |
-| `battery.nominal_full_pack_kwh` | kWh | |
-| `battery.beginning_of_life_kwh` | kWh | |
-| `battery.nominal_energy_remaining_kwh` | kWh | |
-| `battery.soh_pct` | % | |
+| `battery.nominal_full_pack_kwh` | kWh | Usable full pack now, falls with SOH |
+| `battery.beginning_of_life_kwh` | kWh | Card constant |
+| `battery.nominal_energy_remaining_kwh` | kWh | \(E_{full}\times SOC/100\) |
+| `battery.soh_pct` | % | \(E_{full}/E_{BOL}\times 100\) |
+| `battery.loss_sei_pct` | % | Calendar SEI film |
+| `battery.loss_cycle_pct` | % | Throughput / C-rate / SOC |
+| `battery.loss_plate_pct` | % | Cold or fast charge plating |
+| `battery.eq_full_cycles` | — | Discharge Ah / BOL Ah |
 | `battery.max_discharge_kw` | kW | BMS, this step |
 | `battery.max_charge_kw` | kW | BMS charge acceptance |
 | `battery.max_discharge_a` | A | |

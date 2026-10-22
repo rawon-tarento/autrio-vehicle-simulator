@@ -34,4 +34,6 @@ python3 -m unittest discover -s tests
 python3 bench/run_benchmark.py
 ```
 
-`state.json` is the live snapshot. It is not in git. `--fresh` starts at the card's home pin.
+`state.json` is the live snapshot. It is not in git. `--fresh` starts at the home pin.
+
+SOH is live pack state: SEI calendar (sqrt time, heat and high SOC), cycle wear (throughput, C-rate), and plating (cold or fast charge). Real time is `aging_accel: 1` on the card. `8760` is about one year per sim hour. `0` freezes it. Equations in `PHYSICS.md`.

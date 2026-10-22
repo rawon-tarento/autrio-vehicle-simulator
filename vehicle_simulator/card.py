@@ -57,6 +57,7 @@ class VehicleCard:
     coulombic_eff_charge: float = 0.99
     nominal_full_pack_kwh: float | None = None
     beginning_of_life_kwh: float | None = None
+    aging_accel: float = 1.0
     rated_wh_per_km: float = 150.0
     precharge_s: float = 1.5
 
@@ -191,6 +192,8 @@ class VehicleCard:
             raise ValueError(f"overheat_protection must be one of {', '.join(OVERHEAT_SETTINGS)}")
         if self.ac_phases not in (1, 3):
             raise ValueError("ac_phases must be 1 or 3")
+        if self.aging_accel < 0.0:
+            raise ValueError("aging_accel must be >= 0")
 
     @property
     def cells_in_series(self) -> int:
